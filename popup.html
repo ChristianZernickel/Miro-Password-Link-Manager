@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miro Link Plugin</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔖 Miro Links</h1>
+    </header>
+
+    <div class="actions">
+      <button id="saveCurrentBtn" class="btn btn-primary">
+        ➕ Aktuellen Link speichern
+      </button>
+    </div>
+
+    <div id="bookmarksList" class="bookmarks-list">
+      <!-- Bookmarks werden hier dynamisch eingefügt -->
+    </div>
+
+    <div id="emptyState" class="empty-state">
+      <p>📭 Noch keine Links gespeichert.</p>
+      <p class="hint">Klicke auf "Aktuellen Link speichern" um zu beginnen.</p>
+      <p class="hint">💡 Tipp: Links sind zusammengeklappt - klicke zum Aufklappen!</p>
+    </div>
+
+    <!-- Nachricht für Feedback -->
+    <div id="message" class="message"></div>
+  </div>
+
+  <!-- Modal für neuen Link / Bearbeiten -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Link speichern</h2>
+        <button id="modalClose" class="close-btn">&times;</button>
+      </div>
+      <form id="bookmarkForm">
+        <div class="form-group">
+          <label for="bookmarkUrl">URL:</label>
+          <input type="url" id="bookmarkUrl" required readonly>
+        </div>
+        <div class="form-group">
+          <label for="bookmarkTitle">Titel:</label>
+          <input type="text" id="bookmarkTitle" required placeholder="z.B. Wichtige Dokumentation">
+        </div>
+        <div class="form-group">
+          <label for="bookmarkDescription">Beschreibung:</label>
+          <textarea id="bookmarkDescription" required rows="4"
+            placeholder="Diese Beschreibung wird beim Öffnen in die Zwischenablage kopiert..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" id="cancelBtn" class="btn btn-secondary">Abbrechen</button>
+          <button type="submit" class="btn btn-primary">Speichern</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bestätigungs-Dialog für Löschen -->
+  <div id="confirmModal" class="modal">
+    <div class="modal-content modal-small">
+      <div class="modal-header">
+        <h2>Löschen bestätigen</h2>
+      </div>
+      <p>Möchtest du diesen Link wirklich löschen?</p>
+      <div class="form-actions">
+        <button id="confirmCancel" class="btn btn-secondary">Abbrechen</button>
+        <button id="confirmDelete" class="btn btn-danger">Löschen</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+
