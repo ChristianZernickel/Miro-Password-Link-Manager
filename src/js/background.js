@@ -30,6 +30,12 @@ chrome.runtime.onInstalled.addListener((details) => {
 
   chrome.contextMenus.create({
     id: 'save-selection',
+    title: '🔖 "%s" in Miro speichern',
+    contexts: ['selection']
+  });
+});
+
+// Context Menu Click Handler
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   try {
     let url = '';
@@ -86,7 +92,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     // Notification anzeigen
     chrome.notifications.create({
       type: 'basic',
-      iconUrl: 'icons/icon48.png',
+      iconUrl: 'assets/icons/icon48.png',
       title: 'Miro Links',
       message: `✓ "${title}" gespeichert`,
       priority: 1
@@ -95,8 +101,9 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   } catch (error) {
     console.error('Fehler beim Speichern via Context Menu:', error);
   }
-        console.log('Popup konnte nicht geöffnet werden:', error);
-      }
+});
+
+// Hilfsfunktion: Fallback-Favicon generieren
 function getFallbackFavicon(url) {
   try {
     const urlObj = new URL(url);
@@ -105,20 +112,15 @@ function getFallbackFavicon(url) {
     return null;
   }
 }
-  };
 
-  handleMenuClick();
-});
-
-// Optional: Keyboard Shortcut Handler
+// Keyboard Shortcut Handler
 chrome.commands?.onCommand.addListener((command) => {
   if (command === 'save-current-page') {
-    // Öffne das Popup
     chrome.action.openPopup();
   }
 });
 
-// Message Handler (falls benötigt)
+// Message Handler (für Kommunikation mit popup)
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'getBookmarks') {
     chrome.storage.sync.get(['bookmarks'], (result) => {
