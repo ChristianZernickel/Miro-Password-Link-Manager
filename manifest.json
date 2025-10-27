@@ -6,7 +6,8 @@
   "permissions": [
     "storage",
     "activeTab",
-    "clipboardWrite"
+    "clipboardWrite",
+    "contextMenus"
   ],
   "action": {
     "default_popup": "popup.html",

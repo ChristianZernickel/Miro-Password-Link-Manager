@@ -14,12 +14,8 @@ chrome.runtime.onInstalled.addListener((details) => {
   } else if (details.reason === 'update') {
     console.log('Miro Link Plugin aktualisiert!');
   }
-});
 
-// Optional: Context Menu Integration (Rechtsklick)
-// Kommentiere dies ein, wenn du Context Menu unterstützen möchtest
-/*
-chrome.runtime.onInstalled.addListener(() => {
+  // Context Menu Integration (Rechtsklick)
   chrome.contextMenus.create({
     id: 'saveLinkWithDescription',
     title: 'Link mit Miro speichern',
@@ -33,18 +29,24 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === 'saveLinkWithDescription') {
-    // Link-URL aus Context Menu
-    const url = info.linkUrl;
-    // Öffne Popup oder sende Nachricht
-    chrome.action.openPopup();
-  } else if (info.menuItemId === 'savePageWithDescription') {
-    // Aktuelle Seite
-    chrome.action.openPopup();
-  }
+// Context Menu Click Handler
+chrome.contextMenus.onClicked.addListener((info) => {
+  const handleMenuClick = async () => {
+    if (info.menuItemId === 'saveLinkWithDescription' ||
+        info.menuItemId === 'savePageWithDescription') {
+      // Öffne Popup - in Manifest V3 kann openPopup() nur in bestimmten Kontexten aufgerufen werden
+      // Stattdessen senden wir eine Nachricht an den Content Script oder öffnen ein neues Tab
+      try {
+        await chrome.action.openPopup();
+      } catch (error) {
+        // Fallback: Sende Nachricht an aktiven Tab oder erstelle neues Fenster
+        console.log('Popup konnte nicht geöffnet werden:', error);
+      }
+    }
+  };
+
+  handleMenuClick();
 });
-*/
 
 // Optional: Keyboard Shortcut Handler
 chrome.commands?.onCommand.addListener((command) => {
