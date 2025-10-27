@@ -1,13 +1,14 @@
 {
   "manifest_version": 3,
   "name": "Miro Link Plugin",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Speichere Links mit Beschreibungen. Beim Öffnen wird die Beschreibung automatisch in die Zwischenablage kopiert.",
   "permissions": [
     "storage",
     "activeTab",
     "clipboardWrite",
-    "contextMenus"
+    "contextMenus",
+    "notifications"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -24,6 +25,15 @@
   },
   "background": {
     "service_worker": "background.js"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L"
+      },
+      "description": "Öffne Miro Links"
+    }
   }
 }
 

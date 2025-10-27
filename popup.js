@@ -8,6 +8,8 @@ let searchQuery = ''; // Aktuelle Suchanfrage
 let sortBy = 'date-desc'; // Aktuelle Sortierung
 let searchDebounceTimer = null; // Timer für Debounce
 let currentTheme = 'light'; // Aktuelles Theme
+let importData = null; // Temporäre Import-Daten
+let selectedBookmarkIndex = -1; // Für Keyboard Navigation
 
 // DOM Elemente
 const saveCurrentBtn = document.getElementById('saveCurrentBtn');
@@ -30,6 +32,19 @@ const searchInput = document.getElementById('searchInput');
 const clearSearchBtn = document.getElementById('clearSearch');
 const sortSelect = document.getElementById('sortSelect');
 const themeToggle = document.getElementById('themeToggle');
+const settingsToggle = document.getElementById('settingsToggle');
+const settingsPanel = document.getElementById('settingsPanel');
+const closeSettings = document.getElementById('closeSettings');
+const exportBtn = document.getElementById('exportBtn');
+const importBtn = document.getElementById('importBtn');
+const importFile = document.getElementById('importFile');
+const importModal = document.getElementById('importModal');
+const importModalClose = document.getElementById('importModalClose');
+const importReplace = document.getElementById('importReplace');
+const importMerge = document.getElementById('importMerge');
+const importUpdate = document.getElementById('importUpdate');
+const importCancel = document.getElementById('importCancel');
+const clearAllBtn = document.getElementById('clearAllBtn');
 
 // Event Listeners initialisieren
 document.addEventListener('DOMContentLoaded', init);
@@ -82,6 +97,52 @@ function init() {
   if (themeToggle) {
     themeToggle.addEventListener('click', toggleTheme);
   }
+
+  // Settings Panel
+  if (settingsToggle) {
+    console.log('Settings toggle button found, adding event listener');
+    settingsToggle.addEventListener('click', () => {
+      console.log('Settings button clicked!');
+      openSettings();
+    });
+  } else {
+    console.error('settingsToggle button not found!');
+  }
+  if (closeSettings) {
+    closeSettings.addEventListener('click', closeSettingsPanel);
+  }
+
+  // Export/Import
+  if (exportBtn) {
+    exportBtn.addEventListener('click', handleExport);
+  }
+  if (importBtn) {
+    importBtn.addEventListener('click', () => importFile.click());
+  }
+  if (importFile) {
+    importFile.addEventListener('change', handleImportFile);
+  }
+  if (importModalClose) {
+    importModalClose.addEventListener('click', closeImportModal);
+  }
+  if (importCancel) {
+    importCancel.addEventListener('click', closeImportModal);
+  }
+  if (importReplace) {
+    importReplace.addEventListener('click', () => handleImport('replace'));
+  }
+  if (importMerge) {
+    importMerge.addEventListener('click', () => handleImport('merge'));
+  }
+  if (importUpdate) {
+    importUpdate.addEventListener('click', () => handleImport('update'));
+  }
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', handleClearAll);
+  }
+
+  // Keyboard Shortcuts
+  document.addEventListener('keydown', handleKeyboardShortcuts);
 
   // Modal schließen bei Klick außerhalb
   modal.addEventListener('click', (e) => {
@@ -730,15 +791,382 @@ function renderFavicon(bookmark) {
           <div class="favicon-placeholder" style="display:none;">${escapeHtml(bookmark.title.charAt(0).toUpperCase())}</div>`;
 }
 
+// Settings Panel Management
+
+function openSettings() {
+  console.log('openSettings called');
+  console.log('settingsPanel:', settingsPanel);
+  updateStatistics();
+  if (settingsPanel) {
+    settingsPanel.classList.add('show');
+    console.log('Settings panel should now be visible');
+  } else {
+    console.error('settingsPanel element not found!');
+  }
+}
+
+function closeSettingsPanel() {
+  settingsPanel.classList.remove('show');
+}
+
+function updateStatistics() {
+  const statBookmarks = document.getElementById('statBookmarks');
+  const statTags = document.getElementById('statTags');
+
+  if (statBookmarks) {
+    statBookmarks.textContent = currentBookmarks.length;
+  }
+  if (statTags) {
+    statTags.textContent = currentTags.size;
+  }
+}
+
+// Export/Import Funktionen
+
+// Daten exportieren
+function handleExport() {
+  try {
+    const exportData = {
+      version: '2.0',
+      exportDate: new Date().toISOString(),
+      bookmarks: currentBookmarks,
+      metadata: {
+        totalBookmarks: currentBookmarks.length,
+        totalTags: currentTags.size,
+        tags: Array.from(currentTags)
+      }
+    };
+
+    const jsonString = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const timestamp = new Date().toISOString().split('T')[0];
+    const filename = `miro-bookmarks-${timestamp}.json`;
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+
+    URL.revokeObjectURL(url);
+    showMessage('✓ Bookmarks exportiert', 'success');
+    closeSettingsPanel();
+  } catch (error) {
+    console.error('Fehler beim Export:', error);
+    showMessage('Fehler beim Export', 'error');
+  }
+}
+
+// Import-Datei lesen
+async function handleImportFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+
+    // Validierung
+    if (!data.bookmarks || !Array.isArray(data.bookmarks)) {
+      showMessage('Ungültige Datei-Struktur', 'error');
+      return;
+    }
+
+    // Daten speichern und Modal öffnen
+    importData = data.bookmarks;
+
+    const importCount = document.getElementById('importCount');
+    if (importCount) {
+      importCount.textContent = importData.length;
+    }
+
+    importModal.classList.add('show');
+  } catch (error) {
+    console.error('Fehler beim Lesen der Datei:', error);
+    showMessage('Fehler beim Lesen der Datei', 'error');
+  }
+
+  // Reset file input
+  e.target.value = '';
+}
+
+// Import durchführen
+async function handleImport(mode) {
+  if (!importData || importData.length === 0) {
+    showMessage('Keine Daten zum Importieren', 'error');
+    return;
+  }
+
+  try {
+    let newBookmarks = [];
+
+    switch (mode) {
+      case 'replace':
+        // Alle löschen und neu importieren
+        newBookmarks = importData.map(b => ({
+          ...b,
+          tags: b.tags || [],
+          favicon: b.favicon || null
+        }));
+        break;
+
+      case 'merge':
+        // Zusammenführen, Duplikate überspringen
+        newBookmarks = [...currentBookmarks];
+        const existingUrls = new Set(currentBookmarks.map(b => b.url));
+
+        importData.forEach(bookmark => {
+          if (!existingUrls.has(bookmark.url)) {
+            newBookmarks.push({
+              ...bookmark,
+              id: generateId(),
+              tags: bookmark.tags || [],
+              favicon: bookmark.favicon || null
+            });
+          }
+        });
+        break;
+
+      case 'update':
+        // Zusammenführen, Duplikate aktualisieren
+        const urlMap = new Map(currentBookmarks.map(b => [b.url, b]));
+
+        importData.forEach(bookmark => {
+          const existing = urlMap.get(bookmark.url);
+          if (existing) {
+            // Aktualisieren
+            Object.assign(existing, {
+              title: bookmark.title,
+              description: bookmark.description,
+              tags: bookmark.tags || existing.tags || [],
+              favicon: bookmark.favicon || existing.favicon,
+              updatedAt: Date.now()
+            });
+          } else {
+            // Neu hinzufügen
+            currentBookmarks.push({
+              ...bookmark,
+              id: generateId(),
+              tags: bookmark.tags || [],
+              favicon: bookmark.favicon || null
+            });
+          }
+        });
+        newBookmarks = currentBookmarks;
+        break;
+    }
+
+    // Speichern
+    await chrome.storage.sync.set({ bookmarks: newBookmarks });
+    currentBookmarks = newBookmarks;
+
+    // UI aktualisieren
+    collectAllTags();
+    renderBookmarks();
+    renderTagFilters();
+
+    const message = mode === 'replace'
+      ? `✓ ${importData.length} Bookmarks importiert (ersetzt)`
+      : `✓ Import abgeschlossen`;
+
+    showMessage(message, 'success');
+    closeImportModal();
+    closeSettingsPanel();
+
+  } catch (error) {
+    console.error('Fehler beim Import:', error);
+    showMessage('Fehler beim Import', 'error');
+  }
+}
+
+function closeImportModal() {
+  importModal.classList.remove('show');
+  importData = null;
+}
+
+// Alle Daten löschen
+async function handleClearAll() {
+  const confirmed = confirm(
+    '⚠️ ACHTUNG: Alle Bookmarks werden unwiderruflich gelöscht!\n\n' +
+    'Möchtest du vorher exportieren?'
+  );
+
+  if (!confirmed) return;
+
+  const reallyConfirmed = confirm(
+    'Wirklich ALLE Daten löschen?\n\n' +
+    'Diese Aktion kann nicht rückgängig gemacht werden!'
+  );
+
+  if (!reallyConfirmed) return;
+
+  try {
+    await chrome.storage.sync.set({ bookmarks: [] });
+    currentBookmarks = [];
+    currentTags.clear();
+    activeTags.clear();
+
+    renderBookmarks();
+    renderTagFilters();
+
+    showMessage('✓ Alle Daten gelöscht', 'success');
+    closeSettingsPanel();
+  } catch (error) {
+    console.error('Fehler beim Löschen:', error);
+    showMessage('Fehler beim Löschen', 'error');
+  }
+}
+
+// Keyboard Shortcuts
+
+function handleKeyboardShortcuts(e) {
+  const activeElement = document.activeElement;
+  const isInputActive = activeElement && (
+    activeElement.tagName === 'INPUT' ||
+    activeElement.tagName === 'TEXTAREA'
+  );
+
+  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  const ctrlOrCmd = isMac ? e.metaKey : e.ctrlKey;
+
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    if (modal.classList.contains('show')) {
+      closeModal();
+    } else if (importModal.classList.contains('show')) {
+      closeImportModal();
+    } else if (confirmModal.classList.contains('show')) {
+      closeConfirmModal();
+    } else if (settingsPanel.classList.contains('show')) {
+      closeSettingsPanel();
+    } else if (searchInput && searchInput.value) {
+      searchInput.value = '';
+      searchQuery = '';
+      if (clearSearchBtn) clearSearchBtn.style.display = 'none';
+      renderBookmarks();
+      searchInput.blur();
+    }
+    return;
+  }
+
+  if (isInputActive) return;
+
+  if (ctrlOrCmd && e.key === 'n') {
+    e.preventDefault();
+    handleSaveCurrentLink();
+    return;
+  }
+
+  if (ctrlOrCmd && e.key === 'f') {
+    e.preventDefault();
+    if (searchInput) {
+      searchInput.focus();
+      searchInput.select();
+    }
+    return;
+  }
+
+  if (ctrlOrCmd && e.key === 'e') {
+    e.preventDefault();
+    handleExport();
+    return;
+  }
+
+  if (ctrlOrCmd && e.key === ',') {
+    e.preventDefault();
+    if (settingsPanel.classList.contains('show')) {
+      closeSettingsPanel();
+    } else {
+      openSettings();
+    }
+    return;
+  }
+
+  if (e.key === '?' && !e.shiftKey && !ctrlOrCmd) {
+    e.preventDefault();
+    showShortcutsHelp();
+    return;
+  }
+
+  if (!modal.classList.contains('show') &&
+      !importModal.classList.contains('show') &&
+      !settingsPanel.classList.contains('show')) {
+
+    const bookmarkItems = document.querySelectorAll('.bookmark-item');
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      navigateBookmarks(bookmarkItems, 'down');
+      return;
+    }
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      navigateBookmarks(bookmarkItems, 'up');
+      return;
+    }
+
+    if (e.key === 'Enter' && selectedBookmarkIndex >= 0) {
+      e.preventDefault();
+      const selectedItem = bookmarkItems[selectedBookmarkIndex];
+      if (selectedItem) {
+        const bookmarkId = selectedItem.dataset.id;
+        handleOpenBookmark(bookmarkId);
+      }
+      return;
+    }
+  }
+}
+
+function navigateBookmarks(bookmarkItems, direction) {
+  if (bookmarkItems.length === 0) return;
+
+  if (selectedBookmarkIndex >= 0 && selectedBookmarkIndex < bookmarkItems.length) {
+    bookmarkItems[selectedBookmarkIndex].classList.remove('keyboard-selected');
+  }
+
+  if (direction === 'down') {
+    selectedBookmarkIndex = Math.min(selectedBookmarkIndex + 1, bookmarkItems.length - 1);
+  } else {
+    selectedBookmarkIndex = Math.max(selectedBookmarkIndex - 1, 0);
+  }
+
+  const selectedItem = bookmarkItems[selectedBookmarkIndex];
+  selectedItem.classList.add('keyboard-selected');
+  selectedItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function showShortcutsHelp() {
+  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  const ctrlKey = isMac ? '⌘' : 'Ctrl';
+
+  const helpText = `🎹 KEYBOARD SHORTCUTS
+
+📝 Allgemein:
+${ctrlKey}+N         Neuer Link speichern
+${ctrlKey}+F         Suche fokussieren
+${ctrlKey}+E         Bookmarks exportieren
+${ctrlKey}+,         Einstellungen öffnen
+Esc              Schließen / Zurücksetzen
+
+🔍 Navigation:
+↑ / ↓            Durch Bookmarks navigieren
+Enter            Ausgewähltes Bookmark öffnen
+
+❓ Hilfe:
+?                Diese Hilfe anzeigen`;
+
+  alert(helpText);
+}
+
 // Theme-Management
 
-// Theme laden
 async function loadTheme() {
   try {
     const result = await chrome.storage.local.get(['theme']);
     currentTheme = result.theme || 'light';
 
-    // System-Theme erkennen falls kein gespeichertes Theme
     if (!result.theme) {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       currentTheme = prefersDark ? 'dark' : 'light';
@@ -750,12 +1178,10 @@ async function loadTheme() {
   }
 }
 
-// Theme anwenden
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   currentTheme = theme;
 
-  // Icon aktualisieren
   if (themeToggle) {
     const icon = themeToggle.querySelector('.theme-icon');
     if (icon) {
@@ -764,7 +1190,6 @@ function applyTheme(theme) {
   }
 }
 
-// Theme umschalten
 async function toggleTheme() {
   const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
@@ -772,7 +1197,6 @@ async function toggleTheme() {
     await chrome.storage.local.set({ theme: newTheme });
     applyTheme(newTheme);
 
-    // Sanfte Animation
     themeToggle.style.transform = 'rotate(360deg)';
     setTimeout(() => {
       themeToggle.style.transform = '';
@@ -781,4 +1205,3 @@ async function toggleTheme() {
     console.error('Fehler beim Speichern des Themes:', error);
   }
 }
-

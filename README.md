@@ -41,7 +41,42 @@ Ein Chrome Extension zum Speichern von Links mit Beschreibungen. Beim Öffnen ei
 - Alle Komponenten optimiert für beide Themes
 - Speichert deine Theme-Präferenz
 
-### 📊 Status: 4 von 8 Features implementiert (50%)
+#### ✅ Export/Import
+- JSON-Export mit Timestamp-Dateinamen
+- 3 Import-Modi: Ersetzen, Zusammenführen, Aktualisieren
+- Duplikaterkennung über URL-Vergleich
+- Einstellungen-Panel mit Statistiken
+- Warnung vor destruktiven Aktionen
+
+#### ✅ Keyboard Shortcuts
+- Globaler Shortcut: `Ctrl+Shift+L` / `Cmd+Shift+L`
+- `Ctrl/Cmd+N`: Neuer Link speichern
+- `Ctrl/Cmd+F`: Suche fokussieren
+- `Ctrl/Cmd+E`: Export
+- `Ctrl/Cmd+,`: Einstellungen
+- `↑/↓`: Navigation, `Enter`: Öffnen
+- `?`: Hilfe anzeigen
+
+#### ✅ Context Menu
+- Rechtsklick auf Links: "🔖 Link in Miro speichern"
+- Rechtsklick auf Seite: "🔖 Seite in Miro speichern"
+- Rechtsklick auf Text: "🔖 '%s' in Miro speichern"
+- Sofortiges Speichern mit Notification
+- Automatische Favicon-Erfassung
+
+### 📊 Status: 7 von 8 Features implementiert (87.5%)
+
+**✅ Abgeschlossen:**
+- Tags & Kategorien
+- Favicons
+- Suche & Filter
+- Dark Mode
+- Export/Import
+- Keyboard Shortcuts
+- Context Menu Integration
+
+**⏳ Nicht implementiert:**
+- Ordnerstruktur (optional, komplex)
 
 Für Details siehe [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) und [features/ROADMAP.md](features/ROADMAP.md).
 
@@ -200,18 +235,20 @@ Bearbeite die CSS-Variablen in `popup.css`:
   --bg-primary: #ffffff;       /* Hintergrund */
   --text-primary: #333333;     /* Text */
   /* ... weitere Variablen */
+- [x] Export/Import Funktion (JSON)
+- [x] Keyboard Shortcuts
+- [x] Context Menu Integration (Rechtsklick)
 }
-```
-
-**Dark Mode:**
-```css
-[data-theme="dark"] {
+### ⏳ Optional (nicht implementiert)
+- [ ] Ordnerstruktur (komplex, hoher Aufwand)
   --accent-primary: #8ab4f8;  /* Primärfarbe */
   --bg-primary: #1e1e1e;       /* Hintergrund */
   --text-primary: #e8e8e8;     /* Text */
   /* ... weitere Variablen */
 }
 ```
+🎉 **Das Projekt ist zu 87.5% abgeschlossen!** Alle Kern-Features sind implementiert.
+
 
 ## 🐛 Fehlersuche
 

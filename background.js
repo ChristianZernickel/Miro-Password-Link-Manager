@@ -17,32 +17,94 @@ chrome.runtime.onInstalled.addListener((details) => {
 
   // Context Menu Integration (Rechtsklick)
   chrome.contextMenus.create({
-    id: 'saveLinkWithDescription',
-    title: 'Link mit Miro speichern',
+    id: 'save-link',
+    title: '🔖 Link in Miro speichern',
     contexts: ['link']
   });
 
   chrome.contextMenus.create({
-    id: 'savePageWithDescription',
-    title: 'Diese Seite mit Miro speichern',
+    id: 'save-page',
+    title: '🔖 Seite in Miro speichern',
     contexts: ['page']
   });
-});
 
-// Context Menu Click Handler
-chrome.contextMenus.onClicked.addListener((info) => {
-  const handleMenuClick = async () => {
-    if (info.menuItemId === 'saveLinkWithDescription' ||
-        info.menuItemId === 'savePageWithDescription') {
-      // Öffne Popup - in Manifest V3 kann openPopup() nur in bestimmten Kontexten aufgerufen werden
-      // Stattdessen senden wir eine Nachricht an den Content Script oder öffnen ein neues Tab
-      try {
-        await chrome.action.openPopup();
-      } catch (error) {
-        // Fallback: Sende Nachricht an aktiven Tab oder erstelle neues Fenster
+  chrome.contextMenus.create({
+    id: 'save-selection',
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  try {
+    let url = '';
+    let title = '';
+    let description = '';
+
+    switch (info.menuItemId) {
+      case 'save-link':
+        url = info.linkUrl;
+        title = info.linkUrl.split('/').pop() || 'Link';
+        description = `Link via Rechtsklick gespeichert von ${tab.title}`;
+        break;
+
+      case 'save-page':
+        url = tab.url;
+        title = tab.title;
+        description = 'Via Rechtsklick gespeichert';
+        break;
+
+      case 'save-selection':
+        url = tab.url;
+        title = tab.title;
+        description = info.selectionText || '';
+        break;
+
+      default:
+        return;
+    }
+
+    // Generiere ID
+    const bookmarkId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+
+    // Favicon abrufen
+    const favicon = tab.favIconUrl || getFallbackFavicon(url);
+
+    // Erstelle neues Bookmark
+    const newBookmark = {
+      id: bookmarkId,
+      url,
+      title,
+      description,
+      tags: [],
+      favicon,
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+
+    // Speichern
+    const result = await chrome.storage.sync.get(['bookmarks']);
+    const bookmarks = result.bookmarks || [];
+    bookmarks.push(newBookmark);
+    await chrome.storage.sync.set({ bookmarks });
+
+    // Notification anzeigen
+    chrome.notifications.create({
+      type: 'basic',
+      iconUrl: 'icons/icon48.png',
+      title: 'Miro Links',
+      message: `✓ "${title}" gespeichert`,
+      priority: 1
+    });
+
+  } catch (error) {
+    console.error('Fehler beim Speichern via Context Menu:', error);
+  }
         console.log('Popup konnte nicht geöffnet werden:', error);
       }
-    }
+function getFallbackFavicon(url) {
+  try {
+    const urlObj = new URL(url);
+    return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=32`;
+  } catch {
+    return null;
+  }
+}
   };
 
   handleMenuClick();

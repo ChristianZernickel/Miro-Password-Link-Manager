@@ -10,10 +10,58 @@
   <div class="container">
     <header>
       <h1>🔖 Miro Links</h1>
-      <button id="themeToggle" class="theme-toggle" title="Theme wechseln">
-        <span class="theme-icon">🌙</span>
-      </button>
+      <div class="header-actions">
+        <button id="settingsToggle" class="theme-toggle" title="Einstellungen">
+          <span class="theme-icon">⚙️</span>
+        </button>
+        <button id="themeToggle" class="theme-toggle" title="Theme wechseln">
+          <span class="theme-icon">🌙</span>
+        </button>
+      </div>
     </header>
+
+    <!-- Einstellungen Panel -->
+    <div id="settingsPanel" class="settings-panel">
+      <div class="settings-header">
+        <h2>⚙️ Einstellungen</h2>
+        <button id="closeSettings" class="close-btn">&times;</button>
+      </div>
+      <div class="settings-content">
+        <div class="settings-section">
+          <h3>📊 Statistiken</h3>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-label">Bookmarks:</span>
+              <span id="statBookmarks" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Tags:</span>
+              <span id="statTags" class="stat-value">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>💾 Daten-Verwaltung</h3>
+          <div class="settings-actions">
+            <button id="exportBtn" class="btn btn-secondary btn-block">
+              📥 Exportieren (JSON)
+            </button>
+            <button id="importBtn" class="btn btn-secondary btn-block">
+              📤 Importieren
+            </button>
+            <input type="file" id="importFile" accept=".json" style="display: none;">
+          </div>
+        </div>
+
+        <div class="settings-section danger-zone">
+          <h3>⚠️ Gefahrenzone</h3>
+          <button id="clearAllBtn" class="btn btn-danger btn-block">
+            🗑️ Alle Daten löschen
+          </button>
+        </div>
+      </div>
+    </div>
 
     <div class="actions">
       <button id="saveCurrentBtn" class="btn btn-primary">
@@ -61,6 +109,34 @@
         <button id="modalClose" class="close-btn">&times;</button>
       </div>
       <form id="bookmarkForm">
+  <!-- Import-Optionen-Dialog -->
+  <div id="importModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📤 Daten importieren</h2>
+        <button id="importModalClose" class="close-btn">&times;</button>
+      </div>
+      <div class="import-info">
+        <p><strong id="importCount">0</strong> Bookmarks gefunden</p>
+        <p class="hint">Wähle eine Import-Option:</p>
+      </div>
+      <div class="import-options">
+        <button id="importReplace" class="btn btn-danger btn-block">
+          🔄 Ersetzen (alle aktuellen Daten löschen)
+        </button>
+        <button id="importMerge" class="btn btn-primary btn-block">
+          ➕ Zusammenführen (Duplikate überspringen)
+        </button>
+        <button id="importUpdate" class="btn btn-secondary btn-block">
+          🔃 Zusammenführen (Duplikate aktualisieren)
+        </button>
+      </div>
+      <div class="form-actions">
+        <button id="importCancel" class="btn btn-secondary">Abbrechen</button>
+      </div>
+    </div>
+  </div>
+
         <div class="form-group">
           <label for="bookmarkUrl">URL:</label>
           <div class="url-with-favicon">
