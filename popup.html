@@ -10,6 +10,9 @@
   <div class="container">
     <header>
       <h1>🔖 Miro Links</h1>
+      <button id="themeToggle" class="theme-toggle" title="Theme wechseln">
+        <span class="theme-icon">🌙</span>
+      </button>
     </header>
 
     <div class="actions">
@@ -17,6 +20,24 @@
         ➕ Aktuellen Link speichern
       </button>
     </div>
+
+    <!-- Suche und Sort -->
+    <div class="search-sort-container">
+      <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Suche in Titel, URL oder Beschreibung..." />
+        <button id="clearSearch" class="clear-search-btn" style="display:none;">&times;</button>
+      </div>
+      <select id="sortSelect" class="sort-select">
+        <option value="date-desc">Neueste zuerst</option>
+        <option value="date-asc">Älteste zuerst</option>
+        <option value="title-asc">Titel A-Z</option>
+        <option value="title-desc">Titel Z-A</option>
+      </select>
+    </div>
+
+    <!-- Tag Filter -->
+    <div id="tagFilterContainer" class="tag-filter-container"></div>
 
     <div id="bookmarksList" class="bookmarks-list">
       <!-- Bookmarks werden hier dynamisch eingefügt -->
@@ -42,7 +63,10 @@
       <form id="bookmarkForm">
         <div class="form-group">
           <label for="bookmarkUrl">URL:</label>
-          <input type="url" id="bookmarkUrl" required readonly>
+          <div class="url-with-favicon">
+            <img id="faviconPreview" class="favicon-preview" alt="Favicon" style="display:none;">
+            <input type="url" id="bookmarkUrl" required readonly>
+          </div>
         </div>
         <div class="form-group">
           <label for="bookmarkTitle">Titel:</label>
@@ -52,6 +76,16 @@
           <label for="bookmarkDescription">Beschreibung:</label>
           <textarea id="bookmarkDescription" required rows="4"
             placeholder="Diese Beschreibung wird beim Öffnen in die Zwischenablage kopiert..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="tagInput">Tags (optional, max. 5):</label>
+          <div class="tag-input-wrapper">
+            <input type="text" id="tagInput" placeholder="z.B. arbeit, wichtig, projekt-x" maxlength="20">
+            <button type="button" id="addTagBtn" class="btn btn-small">+ Hinzufügen</button>
+          </div>
+          <div id="tagsContainer" class="tags-container">
+            <div class="tags-empty">Noch keine Tags hinzugefügt</div>
+          </div>
         </div>
         <div class="form-actions">
           <button type="button" id="cancelBtn" class="btn btn-secondary">Abbrechen</button>
