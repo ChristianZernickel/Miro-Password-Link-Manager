@@ -8,7 +8,6 @@
   align-items: center;
   gap: 8px;
 }
-
 .tag-filters-label {
   font-size: 12px;
   font-weight: 600;
@@ -16,7 +15,6 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-
 .tag-filter-chip {
   background: var(--bg-primary);
   border: 1px solid var(--border-secondary);
@@ -28,45 +26,37 @@
   color: var(--text-secondary);
   font-weight: 500;
 }
-
 .tag-filter-chip:hover {
   border-color: var(--accent-primary);
   background: var(--accent-light);
   color: var(--accent-primary);
 }
-
 .tag-filter-chip.active {
   background: var(--accent-primary);
   border-color: var(--accent-primary);
   color: var(--text-inverse);
 }
-
 .tag-filter-chip.clear-filter {
   background: var(--error);
   border-color: var(--error);
   color: var(--text-inverse);
 }
-
 .tag-filter-chip.clear-filter:hover {
   background: #c5221f;
   border-color: #c5221f;
 }
-
 /* Tag Input im Modal */
 .tag-input-wrapper {
   display: flex;
   gap: 8px;
   margin-bottom: 10px;
 }
-
 .tag-input-wrapper input {
   flex: 1;
 }
-
 .tag-input-wrapper .btn {
   flex-shrink: 0;
 }
-
 /* Tags Container */
 .tags-container {
   min-height: 40px;
@@ -78,13 +68,11 @@
   gap: 6px;
   align-items: center;
 }
-
 .tags-empty {
   font-size: 12px;
   color: var(--text-tertiary);
   font-style: italic;
 }
-
 /* Tag Chip (im Modal) */
 .tag-chip {
   display: inline-flex;
@@ -97,15 +85,12 @@
   color: var(--accent-primary);
   gap: 6px;
 }
-
 [data-theme="dark"] .tag-chip {
   color: var(--accent-hover);
 }
-
 .tag-text {
   font-weight: 500;
 }
-
 .tag-remove {
   background: transparent;
   border: none;
@@ -122,19 +107,15 @@
   border-radius: 50%;
   transition: background 0.2s ease;
 }
-
 .tag-remove:hover {
   background: rgba(66, 133, 244, 0.2);
 }
-
 [data-theme="dark"] .tag-remove {
   color: var(--accent-hover);
 }
-
 [data-theme="dark"] .tag-remove:hover {
   background: rgba(138, 180, 248, 0.2);
 }
-
 /* Tag Badge (in Bookmarks) */
 .bookmark-tags {
   display: flex;
@@ -143,11 +124,9 @@
   margin-top: 8px;
   padding-top: 8px;
 }
-
 .bookmark-item.collapsed .bookmark-tags {
   display: none;
 }
-
 .tag-badge {
   display: inline-block;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -160,7 +139,6 @@
   letter-spacing: 0.3px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
-
 /* No Results Message */
 .no-results {
   text-align: center;
@@ -168,7 +146,6 @@
   color: var(--text-secondary);
   font-size: 15px;
 }
-
 /* Favicon Styles */
 .bookmark-favicon {
   width: 20px;
@@ -179,7 +156,6 @@
   margin-right: 8px;
   display: inline-block;
 }
-
 .favicon-placeholder {
   width: 20px;
   height: 20px;
@@ -194,13 +170,11 @@
   flex-shrink: 0;
   margin-right: 8px;
 }
-
 .url-with-favicon {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
 .favicon-preview {
   width: 20px;
   height: 20px;
@@ -221,11 +195,9 @@
   transition: right 0.3s ease;
   overflow-y: auto;
 }
-
 .settings-panel.show {
   right: 0;
 }
-
 .settings-header {
   display: flex;
   justify-content: space-between;
@@ -234,5 +206,9 @@
   border-bottom: 1px solid var(--border-primary);
   background: var(--bg-tertiary);
 }
-
 .settings-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}

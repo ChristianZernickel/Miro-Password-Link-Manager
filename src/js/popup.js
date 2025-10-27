@@ -10,6 +10,7 @@ import {
   generateId,
   formatDate,
   escapeHtml,
+  getFallbackFavicon,
   renderFavicon,
   renderTags,
   showMessage
@@ -612,6 +613,4 @@ function handleEscapeKey() {
   }
 }
 
-// Make getFallbackFavicon available globally for utils
-window.getFallbackFavicon = getFallbackFavicon;
 

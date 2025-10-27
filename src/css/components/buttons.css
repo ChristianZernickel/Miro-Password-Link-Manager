@@ -52,30 +52,3 @@
   font-size: 13px;
 }
 
-/* Bookmarks List */
-.bookmarks-list {
-  padding: 12px 20px 20px;
-}
-
-.bookmark-item {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
-  border-radius: 8px;
-  padding: 12px 14px;
-  margin-bottom: 8px;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.bookmark-item:hover {
-  border-color: var(--accent-primary);
-  box-shadow: 0 2px 8px var(--accent-light);
-}
-
-.bookmark-item.keyboard-selected {
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px var(--accent-light);
-  background: var(--accent-light);
-}
-
-.bookmark-item.expanded {

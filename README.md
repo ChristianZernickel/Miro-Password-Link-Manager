@@ -1,302 +1,89 @@
 # 🔖 Miro Link Plugin
 
-Ein Chrome Extension zum Speichern von Links mit Beschreibungen. Beim Öffnen eines gespeicherten Bookmarks wird die URL in einem neuen Tab geöffnet und die Beschreibung automatisch in die Zwischenablage kopiert.
+> **Version 2.1.0 - Restructured Edition** 🎉
 
-## ✨ Features
+Chrome Extension zum Speichern von Links mit Beschreibungen, Tags, Suche, Dark Mode und mehr!
 
-### 🎯 Core Features
-- **Link speichern**: Speichere die aktuelle Seite mit Titel und Beschreibung
-- **Automatisches Kopieren**: Beim Öffnen eines Bookmarks wird die Beschreibung in die Zwischenablage kopiert
-- **Bearbeiten**: Ändere Titel und Beschreibung gespeicherter Bookmarks
-- **Löschen**: Entferne Bookmarks mit Bestätigung
-- **Synchronisierung**: Deine Bookmarks werden über Chrome-Accounts synchronisiert
-- **Aufklapp-Interface**: Kompakte Darstellung, die sich bei Bedarf erweitert
+## 🚀 Quick Start
 
-### 🆕 Neue Features (v2.0)
+```bash
+# 1. Chrome Extensions öffnen
+chrome://extensions/
 
-#### ✅ Tags & Kategorien
-- Organisiere Bookmarks mit bis zu 5 Tags
-- Filter nach einem oder mehreren Tags (AND-Verknüpfung)
-- Automatische Tag-Vorschläge basierend auf existierenden Tags
-- Validierung und intelligente Tag-Verwaltung
-- Schöne Gradient-Badges für visuelle Unterscheidung
+# 2. Entwicklermodus aktivieren
 
-#### ✅ Favicons
-- Automatische Website-Icons neben jedem Bookmark
-- Google Favicon Service als Fallback
-- Gradient-Avatare mit ersten Buchstaben als letzter Fallback
-- Icons im Modal und in der Bookmark-Liste
+# 3. "Entpackte Erweiterung laden"
+# Diesen Ordner auswählen
 
-#### ✅ Suche & Filter
-- Echtzeit-Suche mit Debounce (300ms)
-- Durchsuche Titel, URL, Beschreibung UND Tags
-- Sortierung nach Datum (neu/alt) oder Titel (A-Z/Z-A)
-- Kombinierbar mit Tag-Filtern
-- Clear-Button zum schnellen Zurücksetzen
+# 4. Plugin nutzen
+# Icon in Toolbar oder Ctrl+Shift+L / Cmd+Shift+L
+```
 
-#### ✅ Dark Mode
-- Vollständiger Dark Mode mit automatischer System-Erkennung
-- Theme-Toggle Button im Header (🌙/☀️)
-- Smooth Transitions zwischen Light/Dark Mode
-- Alle Komponenten optimiert für beide Themes
-- Speichert deine Theme-Präferenz
+## ✨ Features (7/8 = 87.5%)
 
-#### ✅ Export/Import
-- JSON-Export mit Timestamp-Dateinamen
-- 3 Import-Modi: Ersetzen, Zusammenführen, Aktualisieren
-- Duplikaterkennung über URL-Vergleich
-- Einstellungen-Panel mit Statistiken
-- Warnung vor destruktiven Aktionen
+✅ Tags & Kategorien • ✅ Favicons • ✅ Suche & Filter  
+✅ Dark Mode • ✅ Export/Import • ✅ Keyboard Shortcuts  
+✅ Context Menu • ⏳ Ordnerstruktur (optional)
 
-#### ✅ Keyboard Shortcuts
-- Globaler Shortcut: `Ctrl+Shift+L` / `Cmd+Shift+L`
-- `Ctrl/Cmd+N`: Neuer Link speichern
-- `Ctrl/Cmd+F`: Suche fokussieren
-- `Ctrl/Cmd+E`: Export
-- `Ctrl/Cmd+,`: Einstellungen
-- `↑/↓`: Navigation, `Enter`: Öffnen
-- `?`: Hilfe anzeigen
+## 📚 Dokumentation
 
-#### ✅ Context Menu
-- Rechtsklick auf Links: "🔖 Link in Miro speichern"
-- Rechtsklick auf Seite: "🔖 Seite in Miro speichern"
-- Rechtsklick auf Text: "🔖 '%s' in Miro speichern"
-- Sofortiges Speichern mit Notification
-- Automatische Favicon-Erfassung
+**Vollständige Dokumentation:** → [docs/README.md](docs/README.md)
 
-### 📊 Status: 7 von 8 Features implementiert (87.5%)
+- **[docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)** - Modulare Architektur
+- **[docs/IMPLEMENTATION_STATUS.md](docs/IMPLEMENTATION_STATUS.md)** - Feature-Details
+- **[docs/features/ROADMAP.md](docs/features/ROADMAP.md)** - Entwicklungs-Roadmap
 
-**✅ Abgeschlossen:**
-- Tags & Kategorien
-- Favicons
-- Suche & Filter
-- Dark Mode
-- Export/Import
-- Keyboard Shortcuts
-- Context Menu Integration
-
-**⏳ Nicht implementiert:**
-- Ordnerstruktur (optional, komplex)
-
-Für Details siehe [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) und [features/ROADMAP.md](features/ROADMAP.md).
-
-## 🚀 Installation
-
-### Entwicklermodus (Lokal)
-
-1. **Repository klonen oder herunterladen**
-   ```bash
-   git clone https://github.com/ChristianZernickel/Miro-Password-Link-Manager.git
-   cd Miro-Password-Link-Manager
-   ```
-
-2. **Chrome Extension laden**
-   - Öffne Chrome und navigiere zu `chrome://extensions/`
-   - Aktiviere den **Entwicklermodus** (Toggle oben rechts)
-   - Klicke auf **Entpackte Erweiterung laden**
-   - Wähle den `Miro-Password-Link-Manager` Ordner aus
-
-3. **Plugin verwenden**
-   - Das Plugin-Icon sollte nun in der Chrome-Toolbar erscheinen
-   - Klicke auf das Icon, um das Plugin zu öffnen
-
-> 📚 **Alle Dokumentation:** Siehe [DOCS_OVERVIEW.md](DOCS_OVERVIEW.md) für eine vollständige Übersicht aller Markdown-Dateien im Projekt.
-
-## 📖 Verwendung
-
-### Link speichern
-1. Navigiere zu einer beliebigen Website
-2. Klicke auf das Miro Link Plugin Icon
-3. Klicke auf **"Aktuellen Link speichern"**
-4. Gib einen Titel und eine Beschreibung ein
-5. *Optional:* Füge Tags hinzu (max. 5)
-6. Klicke auf **"Speichern"**
-
-### Bookmark öffnen
-1. Öffne das Plugin
-2. Klicke auf den Bookmark-Header zum Aufklappen
-3. Klicke auf die Beschreibung zum Öffnen
-4. Die URL wird in einem neuen Tab geöffnet
-5. Die Beschreibung wird automatisch in die Zwischenablage kopiert
-6. Du siehst eine Bestätigung: "✓ Link geöffnet & Beschreibung kopiert"
-
-### Tags verwenden
-1. Beim Speichern: Gib einen Tag-Namen ein und klicke "Hinzufügen"
-2. Tags werden als bunte Badges unter dem Bookmark angezeigt
-3. Klicke auf einen Tag in der Filter-Leiste zum Filtern
-4. Klicke mehrere Tags zum Kombinieren (AND-Filter)
-5. "✕ Alle anzeigen" zum Zurücksetzen der Filter
-
-### Suchen & Sortieren
-1. Nutze die Suchleiste unter dem "Link speichern" Button
-2. Suche durchsucht automatisch Titel, URL, Beschreibung und Tags
-3. Wähle eine Sortierung aus dem Dropdown (Datum oder Titel)
-4. Suche und Filter können kombiniert werden
-
-### Theme wechseln
-1. Klicke auf den 🌙/☀️ Button im Header
-2. Das Theme wechselt zwischen Light und Dark Mode
-3. Deine Präferenz wird automatisch gespeichert
-
-### Bookmark bearbeiten
-1. Öffne das Plugin
-2. Klicke auf das ✏️ (Bearbeiten) Icon beim gewünschten Bookmark
-3. Ändere Titel, Beschreibung oder Tags
-4. Klicke auf **"Speichern"**
-
-### Bookmark löschen
-1. Öffne das Plugin
-2. Klicke auf das 🗑️ (Löschen) Icon beim gewünschten Bookmark
-3. Bestätige das Löschen im Dialog
-
-## 🏗️ Projektstruktur
+## 🏗️ Projekt-Struktur
 
 ```
-miro-link-plugin/
-├── manifest.json              # Chrome Extension Konfiguration
-├── popup.html                # Haupt-UI des Plugins
-├── popup.js                  # Logik für das Popup (mit allen Features)
-├── popup.css                 # Styling (inkl. Dark Mode)
-├── background.js             # Service Worker
-├── icons/                    # Plugin Icons
-│   ├── icon16.png
-│   ├── icon48.png
-│   └── icon128.png
-├── features/                 # Feature-Dokumentation
-│   ├── ROADMAP.md           # Implementierungs-Roadmap
-│   ├── 01-tags-kategorien.md
-│   ├── 02-suche-filter.md
-│   ├── 03-export-import.md
-│   ├── 04-keyboard-shortcuts.md
-│   ├── 05-context-menu.md
-│   ├── 06-dark-mode.md
-│   ├── 07-ordnerstruktur.md
-│   └── 08-favicons.md
-├── IMPLEMENTATION_STATUS.md  # Detaillierte Feature-Übersicht
-├── instructions.md           # Entwicklungsplan
-└── README.md                # Diese Datei
+├── manifest.json         # Extension Config
+├── src/                  # Source Code
+│   ├── popup.html       # UI
+│   ├── js/              # JavaScript
+│   │   ├── popup.js     # Main (617 Zeilen)
+│   │   ├── background.js
+│   │   └── modules/     # 7 Module
+│   └── css/             # Styles
+│       ├── main.css
+│       └── components/  # 8 CSS-Komponenten
+├── assets/icons/        # Icons
+└── docs/                # Dokumentation
 ```
+
+**Neu in v2.1:** Modulare ES6-Architektur mit 7 JS-Modulen + 8 CSS-Komponenten!
 
 ## 🔧 Technologie
 
-- **Manifest Version**: Chrome Manifest V3
-- **Storage**: Chrome Storage API (sync + local)
-- **Clipboard**: Navigator Clipboard API
-- **UI**: Vanilla JavaScript, HTML5, CSS3
-- **Styling**: CSS Variables für Theming, Flexbox, Grid
-- **Performance**: Debounce, effiziente Filter-Pipelines
-- **Theme**: System-Theme-Detection mit `prefers-color-scheme`
+ES6 Modules • Chrome Manifest V3 • CSS Variables • Dark Mode  
+Vanilla JS • Manager Pattern • Modular Architecture
 
-## 📝 Datenstruktur
+## 👨‍💻 Entwicklung
 
-Jedes Bookmark wird mit folgender Struktur gespeichert:
+```bash
+# Modul bearbeiten
+src/js/modules/tags.js
 
-```javascript
-{
-  id: "unique-id",
-  url: "https://example.com",
-  title: "Page Title",
-  description: "Meine Beschreibung",
-  tags: ["arbeit", "wichtig"],        // Neu in v2.0
-  favicon: "https://...",              // Neu in v2.0
-  createdAt: 1234567890,
-  updatedAt: 1234567890
-}
+# CSS-Komponente bearbeiten
+src/css/components/bookmarks.css
+
+# Extension neu laden (nach Änderungen)
+chrome://extensions/ → Reload Button
 ```
 
-**Neue Felder in v2.0:**
-- `tags`: Array mit bis zu 5 Tags (optional)
-- `favicon`: URL zum Favicon oder Fallback (optional)
+## 📊 Metriken
 
-## 🔐 Berechtigungen
-
-Das Plugin benötigt folgende Berechtigungen:
-
-- **storage**: Zum Speichern der Bookmarks (sync + local für Theme)
-- **activeTab**: Zum Abrufen der aktuellen URL und Favicons
-- **clipboardWrite**: Zum Kopieren der Beschreibung
-- **contextMenus**: Für zukünftige Rechtsklick-Integration (vorbereitet)
-
-## 🎨 Anpassung
-
-### Icons ändern
-Ersetze die PNG-Dateien im `icons/` Ordner:
-- `icon16.png` (16x16px) - Toolbar Icon
-- `icon48.png` (48x48px) - Extension Management
-- `icon128.png` (128x128px) - Chrome Web Store
-
-### Farben anpassen
-Bearbeite die CSS-Variablen in `popup.css`:
-
-**Light Mode:**
-```css
-:root {
-  --accent-primary: #4285f4;  /* Primärfarbe */
-  --bg-primary: #ffffff;       /* Hintergrund */
-  --text-primary: #333333;     /* Text */
-  /* ... weitere Variablen */
-- [x] Export/Import Funktion (JSON)
-- [x] Keyboard Shortcuts
-- [x] Context Menu Integration (Rechtsklick)
-}
-### ⏳ Optional (nicht implementiert)
-- [ ] Ordnerstruktur (komplex, hoher Aufwand)
-  --accent-primary: #8ab4f8;  /* Primärfarbe */
-  --bg-primary: #1e1e1e;       /* Hintergrund */
-  --text-primary: #e8e8e8;     /* Text */
-  /* ... weitere Variablen */
-}
-```
-🎉 **Das Projekt ist zu 87.5% abgeschlossen!** Alle Kern-Features sind implementiert.
-
-
-## 🐛 Fehlersuche
-
-### Plugin wird nicht geladen
-- Stelle sicher, dass der Entwicklermodus aktiviert ist
-- Überprüfe die Chrome DevTools Console auf Fehler
-- Versuche, das Plugin neu zu laden
-
-### Beschreibung wird nicht kopiert
-- Überprüfe, ob die Clipboard-Berechtigung gewährt wurde
-- Die Zwischenablage-API funktioniert nur in sicheren Kontexten (HTTPS)
-
-### Bookmarks werden nicht gespeichert
-- Überprüfe die Storage-Berechtigung
-- Chrome Sync muss aktiviert sein für sync storage
-
-## 🚧 Geplante Features
-
-### ✅ Bereits implementiert (v2.0)
-- [x] Tags/Kategorien für Bookmarks
-- [x] Suche und Filteroptionen  
-- [x] Dark Mode
-- [x] Favicons anzeigen
-
-### ⏳ In Planung (v2.1+)
-- [ ] Export/Import Funktion (JSON)
-- [ ] Keyboard Shortcuts
-- [ ] Context Menu Integration (Rechtsklick)
-- [ ] Ordnerstruktur
-
-📖 **Detaillierte Informationen:**
-- Vollständige Feature-Beschreibungen: [features/](features/)
-- Implementierungs-Status: [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)
-- Entwicklungs-Roadmap: [features/ROADMAP.md](features/ROADMAP.md)
+- **Modularität:** 7 JS-Module + 8 CSS-Komponenten
+- **Größte Datei:** 617 Zeilen (war 1.200+)
+- **Root-Dateien:** 3 (war 20+) 
+- **Feature-Completion:** 87.5%
 
 ## 📄 Lizenz
 
-MIT License - Fühle dich frei, dieses Plugin zu verwenden und anzupassen!
-
-## 👤 Autor
-
-Erstellt für persönlichen Gebrauch und Lernzwecke.
-
-## 🤝 Beitragen
-
-Verbesserungsvorschläge und Pull Requests sind willkommen!
+MIT License
 
 ---
 
-**Viel Spaß beim Verwenden des Miro Link Plugins! 🎉**
+**Status:** ✅ Produktionsbereit | **Version:** 2.1.0 | **Features:** 7/8 (87.5%)
+
+Siehe [docs/README.md](docs/README.md) für vollständige Dokumentation! 📚
 

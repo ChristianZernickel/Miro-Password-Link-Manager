@@ -1,3 +1,72 @@
+// Utils Modul - Hilfsfunktionen
+
+// Eindeutige ID generieren
+export function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).substring(2);
+}
+
+// Datum formatieren
+export function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const now = new Date();
+  const diff = now - date;
+
+  if (diff < 60000) {
+    return 'Gerade eben';
+  }
+
+  if (diff < 3600000) {
+    const minutes = Math.floor(diff / 60000);
+    return `Vor ${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
+  }
+
+  if (diff < 86400000) {
+    const hours = Math.floor(diff / 3600000);
+    return `Vor ${hours} Stunde${hours !== 1 ? 'n' : ''}`;
+  }
+
+  if (diff < 604800000) {
+    const days = Math.floor(diff / 86400000);
+    return `Vor ${days} Tag${days !== 1 ? 'en' : ''}`;
+  }
+
+  return date.toLocaleDateString('de-DE', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+}
+
+// HTML escapen (XSS-Schutz)
+export function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Favicon-URL generieren
+export function getFallbackFavicon(url) {
+  try {
+    const urlObj = new URL(url);
+    return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=32`;
+  } catch {
+    return null;
+  }
+}
+
+// Favicon HTML rendern
+export function renderFavicon(bookmark) {
+  const favicon = bookmark.favicon || getFallbackFavicon(bookmark.url);
+
+  if (!favicon) {
+    const initial = bookmark.title.charAt(0).toUpperCase();
+    return `<div class="favicon-placeholder">${escapeHtml(initial)}</div>`;
+  }
+
+  return `<img src="${favicon}" class="bookmark-favicon" alt="Icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="favicon-placeholder" style="display:none;">${escapeHtml(bookmark.title.charAt(0).toUpperCase())}</div>`;
+}
+
 // Tags HTML rendern
 export function renderTags(tags) {
   if (!tags || tags.length === 0) {
@@ -22,74 +91,5 @@ export function showMessage(text, type = 'success') {
   setTimeout(() => {
     messageDiv.classList.remove('show');
   }, 3000);
-}
-// Storage Modul - Verwaltet alle Chrome Storage Operationen
-
-export async function loadBookmarks() {
-  try {
-    const result = await chrome.storage.sync.get(['bookmarks']);
-    let bookmarks = result.bookmarks || [];
-
-    // Migration: Tags-Array für alte Bookmarks hinzufügen
-    let needsUpdate = false;
-    bookmarks = bookmarks.map(bookmark => {
-      if (!bookmark.tags) {
-        needsUpdate = true;
-        return { ...bookmark, tags: [] };
-      }
-      return bookmark;
-    });
-
-    if (needsUpdate) {
-      await saveBookmarks(bookmarks);
-    }
-
-    return bookmarks;
-  } catch (error) {
-    console.error('Fehler beim Laden der Bookmarks:', error);
-    throw error;
-  }
-}
-
-export async function saveBookmarks(bookmarks) {
-  try {
-    await chrome.storage.sync.set({ bookmarks });
-    return true;
-  } catch (error) {
-    console.error('Fehler beim Speichern der Bookmarks:', error);
-    throw error;
-  }
-}
-
-export async function loadTheme() {
-  try {
-    const result = await chrome.storage.local.get(['theme']);
-    let theme = result.theme || 'light';
-
-    if (!result.theme) {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      theme = prefersDark ? 'dark' : 'light';
-    }
-
-    return theme;
-  } catch (error) {
-    console.error('Fehler beim Laden des Themes:', error);
-    return 'light';
-  }
-}
-
-export async function saveTheme(theme) {
-  try {
-    await chrome.storage.local.set({ theme });
-    return true;
-  } catch (error) {
-    console.error('Fehler beim Speichern des Themes:', error);
-    throw error;
-  }
-}
-
-export async function getCurrentTab() {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  return tab;
 }
 

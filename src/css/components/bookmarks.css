@@ -2,7 +2,6 @@
 .bookmarks-list {
   padding: 12px 20px 20px;
 }
-
 .bookmark-item {
   background: var(--bg-primary);
   border: 1px solid var(--border-primary);
@@ -12,37 +11,30 @@
   transition: all 0.2s ease;
   cursor: pointer;
 }
-
 .bookmark-item:hover {
   border-color: var(--accent-primary);
   box-shadow: 0 2px 8px var(--accent-light);
 }
-
 .bookmark-item.keyboard-selected {
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 3px var(--accent-light);
   background: var(--accent-light);
 }
-
 .bookmark-item.expanded {
   background: var(--bg-tertiary);
 }
-
 .bookmark-item.collapsed .bookmark-description {
   display: none;
 }
-
 .bookmark-item.collapsed .bookmark-date {
   display: none;
 }
-
 .bookmark-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 8px;
 }
-
 .bookmark-expand-indicator {
   font-size: 10px;
   color: var(--text-tertiary);
@@ -53,21 +45,17 @@
   cursor: pointer;
   user-select: none;
 }
-
 .bookmark-item:hover .bookmark-expand-indicator {
   color: var(--accent-primary);
 }
-
 .bookmark-item.expanded .bookmark-expand-indicator {
   transform: rotate(90deg);
 }
-
 .bookmark-info {
   flex: 1;
   min-width: 0;
   cursor: pointer;
 }
-
 .bookmark-title {
   font-weight: 600;
   font-size: 14px;
@@ -76,7 +64,6 @@
   word-wrap: break-word;
   line-height: 1.4;
 }
-
 .bookmark-url {
   font-size: 11px;
   color: var(--text-secondary);
@@ -85,18 +72,15 @@
   white-space: nowrap;
   max-width: 300px;
 }
-
 .bookmark-item.collapsed .bookmark-url {
   display: none;
 }
-
 .bookmark-actions {
   display: flex;
   gap: 4px;
   margin-left: 8px;
   flex-shrink: 0;
 }
-
 .icon-btn {
   background: transparent;
   border: none;
@@ -107,11 +91,9 @@
   transition: background 0.2s ease;
   line-height: 1;
 }
-
 .icon-btn:hover {
   background: var(--bg-hover);
 }
-
 .bookmark-description {
   font-size: 13px;
   color: var(--text-secondary);
@@ -125,11 +107,9 @@
   margin: 10px -10px -10px -10px;
   transition: background 0.2s ease;
 }
-
 .bookmark-description:hover {
   background: var(--accent-light);
 }
-
 .bookmark-description::after {
   content: ' 🔗 Klicken zum Öffnen';
   font-size: 11px;
@@ -140,12 +120,11 @@
   opacity: 0;
   transition: opacity 0.2s ease;
 }
-
 .bookmark-description:hover::after {
   opacity: 1;
 }
-
 .bookmark-date {
   font-size: 11px;
   color: var(--text-tertiary);
   margin-top: 6px;
+}
