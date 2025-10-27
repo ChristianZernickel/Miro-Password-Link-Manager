@@ -17,15 +17,15 @@ Ein Chrome Extension zum Speichern von Links mit Beschreibungen. Beim Öffnen ei
 
 1. **Repository klonen oder herunterladen**
    ```bash
-   git clone https://github.com/yourusername/miro-link-plugin.git
-   cd miro-link-plugin
+   git clone https://github.com/ChristianZernickel/Miro-Password-Link-Manager.git
+   cd Miro-Password-Link-Manager
    ```
 
 2. **Chrome Extension laden**
    - Öffne Chrome und navigiere zu `chrome://extensions/`
    - Aktiviere den **Entwicklermodus** (Toggle oben rechts)
    - Klicke auf **Entpackte Erweiterung laden**
-   - Wähle den `miro-link-plugin` Ordner aus
+   - Wähle den `Miro-Password-Link-Manager` Ordner aus
 
 3. **Plugin verwenden**
    - Das Plugin-Icon sollte nun in der Chrome-Toolbar erscheinen
