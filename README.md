@@ -4,12 +4,46 @@ Ein Chrome Extension zum Speichern von Links mit Beschreibungen. Beim Öffnen ei
 
 ## ✨ Features
 
+### 🎯 Core Features
 - **Link speichern**: Speichere die aktuelle Seite mit Titel und Beschreibung
 - **Automatisches Kopieren**: Beim Öffnen eines Bookmarks wird die Beschreibung in die Zwischenablage kopiert
 - **Bearbeiten**: Ändere Titel und Beschreibung gespeicherter Bookmarks
 - **Löschen**: Entferne Bookmarks mit Bestätigung
 - **Synchronisierung**: Deine Bookmarks werden über Chrome-Accounts synchronisiert
-- **Modernes Design**: Saubere und intuitive Benutzeroberfläche
+- **Aufklapp-Interface**: Kompakte Darstellung, die sich bei Bedarf erweitert
+
+### 🆕 Neue Features (v2.0)
+
+#### ✅ Tags & Kategorien
+- Organisiere Bookmarks mit bis zu 5 Tags
+- Filter nach einem oder mehreren Tags (AND-Verknüpfung)
+- Automatische Tag-Vorschläge basierend auf existierenden Tags
+- Validierung und intelligente Tag-Verwaltung
+- Schöne Gradient-Badges für visuelle Unterscheidung
+
+#### ✅ Favicons
+- Automatische Website-Icons neben jedem Bookmark
+- Google Favicon Service als Fallback
+- Gradient-Avatare mit ersten Buchstaben als letzter Fallback
+- Icons im Modal und in der Bookmark-Liste
+
+#### ✅ Suche & Filter
+- Echtzeit-Suche mit Debounce (300ms)
+- Durchsuche Titel, URL, Beschreibung UND Tags
+- Sortierung nach Datum (neu/alt) oder Titel (A-Z/Z-A)
+- Kombinierbar mit Tag-Filtern
+- Clear-Button zum schnellen Zurücksetzen
+
+#### ✅ Dark Mode
+- Vollständiger Dark Mode mit automatischer System-Erkennung
+- Theme-Toggle Button im Header (🌙/☀️)
+- Smooth Transitions zwischen Light/Dark Mode
+- Alle Komponenten optimiert für beide Themes
+- Speichert deine Theme-Präferenz
+
+### 📊 Status: 4 von 8 Features implementiert (50%)
+
+Für Details siehe [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) und [features/ROADMAP.md](features/ROADMAP.md).
 
 ## 🚀 Installation
 
@@ -31,6 +65,8 @@ Ein Chrome Extension zum Speichern von Links mit Beschreibungen. Beim Öffnen ei
    - Das Plugin-Icon sollte nun in der Chrome-Toolbar erscheinen
    - Klicke auf das Icon, um das Plugin zu öffnen
 
+> 📚 **Alle Dokumentation:** Siehe [DOCS_OVERVIEW.md](DOCS_OVERVIEW.md) für eine vollständige Übersicht aller Markdown-Dateien im Projekt.
+
 ## 📖 Verwendung
 
 ### Link speichern
@@ -38,19 +74,39 @@ Ein Chrome Extension zum Speichern von Links mit Beschreibungen. Beim Öffnen ei
 2. Klicke auf das Miro Link Plugin Icon
 3. Klicke auf **"Aktuellen Link speichern"**
 4. Gib einen Titel und eine Beschreibung ein
-5. Klicke auf **"Speichern"**
+5. *Optional:* Füge Tags hinzu (max. 5)
+6. Klicke auf **"Speichern"**
 
 ### Bookmark öffnen
 1. Öffne das Plugin
-2. Klicke auf ein gespeichertes Bookmark
-3. Die URL wird in einem neuen Tab geöffnet
-4. Die Beschreibung wird automatisch in die Zwischenablage kopiert
-5. Du siehst eine Bestätigung: "✓ Link geöffnet & Beschreibung kopiert"
+2. Klicke auf den Bookmark-Header zum Aufklappen
+3. Klicke auf die Beschreibung zum Öffnen
+4. Die URL wird in einem neuen Tab geöffnet
+5. Die Beschreibung wird automatisch in die Zwischenablage kopiert
+6. Du siehst eine Bestätigung: "✓ Link geöffnet & Beschreibung kopiert"
+
+### Tags verwenden
+1. Beim Speichern: Gib einen Tag-Namen ein und klicke "Hinzufügen"
+2. Tags werden als bunte Badges unter dem Bookmark angezeigt
+3. Klicke auf einen Tag in der Filter-Leiste zum Filtern
+4. Klicke mehrere Tags zum Kombinieren (AND-Filter)
+5. "✕ Alle anzeigen" zum Zurücksetzen der Filter
+
+### Suchen & Sortieren
+1. Nutze die Suchleiste unter dem "Link speichern" Button
+2. Suche durchsucht automatisch Titel, URL, Beschreibung und Tags
+3. Wähle eine Sortierung aus dem Dropdown (Datum oder Titel)
+4. Suche und Filter können kombiniert werden
+
+### Theme wechseln
+1. Klicke auf den 🌙/☀️ Button im Header
+2. Das Theme wechselt zwischen Light und Dark Mode
+3. Deine Präferenz wird automatisch gespeichert
 
 ### Bookmark bearbeiten
 1. Öffne das Plugin
 2. Klicke auf das ✏️ (Bearbeiten) Icon beim gewünschten Bookmark
-3. Ändere Titel oder Beschreibung
+3. Ändere Titel, Beschreibung oder Tags
 4. Klicke auf **"Speichern"**
 
 ### Bookmark löschen
@@ -62,25 +118,39 @@ Ein Chrome Extension zum Speichern von Links mit Beschreibungen. Beim Öffnen ei
 
 ```
 miro-link-plugin/
-├── manifest.json          # Chrome Extension Konfiguration
-├── popup.html            # Haupt-UI des Plugins
-├── popup.js              # Logik für das Popup
-├── popup.css             # Styling für das Popup
-├── background.js         # Service Worker
-├── icons/                # Plugin Icons
+├── manifest.json              # Chrome Extension Konfiguration
+├── popup.html                # Haupt-UI des Plugins
+├── popup.js                  # Logik für das Popup (mit allen Features)
+├── popup.css                 # Styling (inkl. Dark Mode)
+├── background.js             # Service Worker
+├── icons/                    # Plugin Icons
 │   ├── icon16.png
 │   ├── icon48.png
 │   └── icon128.png
-├── instructions.md       # Entwicklungsplan
-└── README.md            # Diese Datei
+├── features/                 # Feature-Dokumentation
+│   ├── ROADMAP.md           # Implementierungs-Roadmap
+│   ├── 01-tags-kategorien.md
+│   ├── 02-suche-filter.md
+│   ├── 03-export-import.md
+│   ├── 04-keyboard-shortcuts.md
+│   ├── 05-context-menu.md
+│   ├── 06-dark-mode.md
+│   ├── 07-ordnerstruktur.md
+│   └── 08-favicons.md
+├── IMPLEMENTATION_STATUS.md  # Detaillierte Feature-Übersicht
+├── instructions.md           # Entwicklungsplan
+└── README.md                # Diese Datei
 ```
 
 ## 🔧 Technologie
 
 - **Manifest Version**: Chrome Manifest V3
-- **Storage**: Chrome Storage API (sync)
+- **Storage**: Chrome Storage API (sync + local)
 - **Clipboard**: Navigator Clipboard API
 - **UI**: Vanilla JavaScript, HTML5, CSS3
+- **Styling**: CSS Variables für Theming, Flexbox, Grid
+- **Performance**: Debounce, effiziente Filter-Pipelines
+- **Theme**: System-Theme-Detection mit `prefers-color-scheme`
 
 ## 📝 Datenstruktur
 
@@ -92,18 +162,25 @@ Jedes Bookmark wird mit folgender Struktur gespeichert:
   url: "https://example.com",
   title: "Page Title",
   description: "Meine Beschreibung",
+  tags: ["arbeit", "wichtig"],        // Neu in v2.0
+  favicon: "https://...",              // Neu in v2.0
   createdAt: 1234567890,
   updatedAt: 1234567890
 }
 ```
 
+**Neue Felder in v2.0:**
+- `tags`: Array mit bis zu 5 Tags (optional)
+- `favicon`: URL zum Favicon oder Fallback (optional)
+
 ## 🔐 Berechtigungen
 
 Das Plugin benötigt folgende Berechtigungen:
 
-- **storage**: Zum Speichern der Bookmarks
-- **activeTab**: Zum Abrufen der aktuellen URL
+- **storage**: Zum Speichern der Bookmarks (sync + local für Theme)
+- **activeTab**: Zum Abrufen der aktuellen URL und Favicons
 - **clipboardWrite**: Zum Kopieren der Beschreibung
+- **contextMenus**: Für zukünftige Rechtsklick-Integration (vorbereitet)
 
 ## 🎨 Anpassung
 
@@ -115,9 +192,26 @@ Ersetze die PNG-Dateien im `icons/` Ordner:
 
 ### Farben anpassen
 Bearbeite die CSS-Variablen in `popup.css`:
-- Primärfarbe: `#4285f4` (Google Blau)
-- Hintergrund: `#f5f5f5`
-- Text: `#333`
+
+**Light Mode:**
+```css
+:root {
+  --accent-primary: #4285f4;  /* Primärfarbe */
+  --bg-primary: #ffffff;       /* Hintergrund */
+  --text-primary: #333333;     /* Text */
+  /* ... weitere Variablen */
+}
+```
+
+**Dark Mode:**
+```css
+[data-theme="dark"] {
+  --accent-primary: #8ab4f8;  /* Primärfarbe */
+  --bg-primary: #1e1e1e;       /* Hintergrund */
+  --text-primary: #e8e8e8;     /* Text */
+  /* ... weitere Variablen */
+}
+```
 
 ## 🐛 Fehlersuche
 
@@ -134,16 +228,24 @@ Bearbeite die CSS-Variablen in `popup.css`:
 - Überprüfe die Storage-Berechtigung
 - Chrome Sync muss aktiviert sein für sync storage
 
-## 🚧 Zukünftige Features
+## 🚧 Geplante Features
 
-- [ ] Tags/Kategorien für Bookmarks
-- [ ] Suche und Filteroptionen
+### ✅ Bereits implementiert (v2.0)
+- [x] Tags/Kategorien für Bookmarks
+- [x] Suche und Filteroptionen  
+- [x] Dark Mode
+- [x] Favicons anzeigen
+
+### ⏳ In Planung (v2.1+)
 - [ ] Export/Import Funktion (JSON)
 - [ ] Keyboard Shortcuts
 - [ ] Context Menu Integration (Rechtsklick)
-- [ ] Dark Mode
 - [ ] Ordnerstruktur
-- [ ] Favicons anzeigen
+
+📖 **Detaillierte Informationen:**
+- Vollständige Feature-Beschreibungen: [features/](features/)
+- Implementierungs-Status: [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)
+- Entwicklungs-Roadmap: [features/ROADMAP.md](features/ROADMAP.md)
 
 ## 📄 Lizenz
 
