@@ -73,7 +73,7 @@
     <div class="search-sort-container">
       <div class="search-wrapper">
         <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" placeholder="Suche in Titel, URL oder Beschreibung..." />
+        <input type="text" id="searchInput" placeholder="Suche in Titel, URL oder Passwort..." />
         <button id="clearSearch" class="clear-search-btn" style="display:none;">&times;</button>
       </div>
       <select id="sortSelect" class="sort-select">
@@ -149,9 +149,14 @@
           <input type="text" id="bookmarkTitle" required placeholder="z.B. Wichtige Dokumentation">
         </div>
         <div class="form-group">
-          <label for="bookmarkDescription">Beschreibung:</label>
-          <textarea id="bookmarkDescription" required rows="4"
-            placeholder="Diese Beschreibung wird beim Öffnen in die Zwischenablage kopiert..."></textarea>
+          <label for="bookmarkDescription">Passwort:</label>
+          <div class="password-input-wrapper">
+            <textarea id="bookmarkDescription" rows="3" required
+              placeholder="Passwort oder Hinweis (wird beim Öffnen in die Zwischenablage kopiert)..."></textarea>
+            <button type="button" id="togglePassword" class="toggle-password" title="Passwort anzeigen/verbergen">
+              👁️
+            </button>
+          </div>
         </div>
         <div class="form-group">
           <label for="tagInput">Tags (optional, max. 5):</label>

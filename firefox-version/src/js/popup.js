@@ -96,6 +96,41 @@ function setupEventListeners() {
   elements.saveCurrentBtn?.addEventListener('click', handleSaveCurrentLink);
   elements.bookmarkForm?.addEventListener('submit', handleFormSubmit);
 
+  // Passwort Toggle im Modal
+  const togglePasswordBtn = document.getElementById('togglePassword');
+  const passwordTextarea = document.getElementById('bookmarkDescription');
+  let isPasswordVisible = false;
+
+  if (togglePasswordBtn && passwordTextarea) {
+    togglePasswordBtn.addEventListener('click', () => {
+      isPasswordVisible = !isPasswordVisible;
+
+      if (isPasswordVisible) {
+        passwordTextarea.style.filter = 'none';
+        passwordTextarea.style.webkitTextSecurity = 'none';
+        togglePasswordBtn.textContent = '🙈';
+        togglePasswordBtn.classList.remove('hidden');
+      } else {
+        passwordTextarea.style.filter = 'blur(5px)';
+        passwordTextarea.style.webkitTextSecurity = 'disc';
+        togglePasswordBtn.textContent = '👁️';
+        togglePasswordBtn.classList.add('hidden');
+      }
+    });
+
+    // Initial obfuskieren
+    passwordTextarea.style.filter = 'blur(5px)';
+    passwordTextarea.style.webkitTextSecurity = 'disc';
+    togglePasswordBtn.classList.add('hidden');
+
+    // Bei Focus automatisch anzeigen
+    passwordTextarea.addEventListener('focus', () => {
+      if (!isPasswordVisible) {
+        togglePasswordBtn.click();
+      }
+    });
+  }
+
   // Modals
   document.getElementById('modalClose')?.addEventListener('click', () => closeModal());
   document.getElementById('cancelBtn')?.addEventListener('click', () => closeModal());
@@ -202,7 +237,7 @@ function renderBookmarks() {
         </div>
       </div>
       ${renderTags(bookmark.tags)}
-      <div class="bookmark-description">${escapeHtml(bookmark.description)}</div>
+      <div class="bookmark-description obfuscated" data-password="${escapeHtml(bookmark.description)}">••••••••••••</div>
       <div class="bookmark-date">${formatDate(bookmark.createdAt)}</div>
     </div>
   `).join('');
@@ -216,10 +251,39 @@ function renderBookmarks() {
       item.classList.toggle('expanded');
     });
 
+    // Passwort-Anzeige Toggle in aufgeklappten Bookmarks
+    const descriptionEl = item.querySelector('.bookmark-description');
+    if (descriptionEl) {
+      descriptionEl.addEventListener('click', (e) => {
+        // Nur togglen wenn obfuskiert
+        if (descriptionEl.classList.contains('obfuscated')) {
+          e.stopPropagation(); // Verhindert Link-Öffnen
+
+          // Lade echtes Passwort aus data-Attribut
+          const realPassword = descriptionEl.getAttribute('data-password');
+          descriptionEl.textContent = realPassword;
+
+          descriptionEl.classList.remove('obfuscated');
+          descriptionEl.classList.add('revealed');
+
+          // Nach 3 Sekunden automatisch wieder verstecken
+          setTimeout(() => {
+            if (descriptionEl.classList.contains('revealed')) {
+              descriptionEl.textContent = '••••••••••••'; // Zurück zu Platzhalter
+              descriptionEl.classList.remove('revealed');
+              descriptionEl.classList.add('obfuscated');
+            }
+          }, 3000);
+        }
+      });
+    }
+
     // Click auf Bookmark (außer Buttons) -> Link öffnen
     item.addEventListener('click', (e) => {
-      // Ignoriere Clicks auf Buttons und Expand-Indicator
-      if (!e.target.closest('.icon-btn') && !e.target.closest('.bookmark-expand-indicator')) {
+      // Ignoriere Clicks auf Buttons, Expand-Indicator und Passwort
+      if (!e.target.closest('.icon-btn') &&
+          !e.target.closest('.bookmark-expand-indicator') &&
+          !e.target.closest('.bookmark-description')) {
         handleOpenBookmark(item.dataset.id);
       }
     });
@@ -413,7 +477,7 @@ async function handleOpenBookmark(bookmarkId) {
   try {
     await navigator.clipboard.writeText(bookmark.description);
     await browser.tabs.create({ url: bookmark.url });
-    showMessage('✓ Link geöffnet & Beschreibung kopiert', 'success');
+    showMessage('✓ Link geöffnet & Passwort kopiert', 'success');
   } catch (error) {
     showMessage('Fehler beim Öffnen des Links', 'error');
   }

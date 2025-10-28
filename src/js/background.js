@@ -46,12 +46,12 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       case 'save-link':
         url = info.linkUrl;
         title = info.linkUrl.split('/').pop() || 'Link';
-        // Öffne Popup mit Script für Beschreibungs-Eingabe
+        // Öffne Popup mit Script für Passwort-Eingabe
         chrome.scripting.executeScript({
           target: { tabId: tab.id },
           func: (linkUrl, linkTitle) => {
             const description = prompt(
-              `🔖 Link speichern: ${linkTitle}\n\nBeschreibung eingeben:`,
+              `🔖 Link speichern: ${linkTitle}\n\nPasswort/Hinweis eingeben:`,
               ''
             );
             if (description !== null) {
@@ -68,12 +68,12 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       case 'save-page':
         url = tab.url;
         title = tab.title;
-        // Öffne Popup für Beschreibungs-Eingabe
+        // Öffne Popup für Passwort-Eingabe
         chrome.scripting.executeScript({
           target: { tabId: tab.id },
           func: (pageUrl, pageTitle) => {
             const description = prompt(
-              `🔖 Seite speichern: ${pageTitle}\n\nBeschreibung eingeben:`,
+              `🔖 Seite speichern: ${pageTitle}\n\nPasswort/Hinweis eingeben:`,
               ''
             );
             if (description !== null) {
@@ -91,12 +91,12 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
         url = tab.url;
         title = tab.title;
         description = info.selectionText || '';
-        // Bei Selection Text als Default-Beschreibung verwenden
+        // Bei Selection Text als Default-Passwort verwenden
         chrome.scripting.executeScript({
           target: { tabId: tab.id },
           func: (pageUrl, pageTitle, defaultDesc) => {
             const description = prompt(
-              `🔖 "${defaultDesc.substring(0, 50)}..." speichern\n\nBeschreibung bearbeiten:`,
+              `🔖 "${defaultDesc.substring(0, 50)}..." speichern\n\nPasswort/Text bearbeiten:`,
               defaultDesc
             );
             if (description !== null) {
@@ -156,7 +156,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
-  // Neuer Handler für Context Menu Speichern mit Beschreibung
+  // Neuer Handler für Context Menu Speichern mit Passwort
   if (request.action === 'saveFromContextMenu') {
     const { url, title, description } = request.data;
 

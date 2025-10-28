@@ -51,7 +51,7 @@ browser.contextMenus.onClicked.addListener(async (info, tab) => {
           code: `
             (function() {
               const description = prompt(
-                '🔖 Link speichern: ${title.replace(/'/g, "\\'")}\\n\\nBeschreibung eingeben:',
+                '🔖 Link speichern: ${title.replace(/'/g, "\\'")}\\n\\nPasswort/Hinweis eingeben:',
                 ''
               );
               if (description !== null) {
@@ -76,7 +76,7 @@ browser.contextMenus.onClicked.addListener(async (info, tab) => {
           code: `
             (function() {
               const description = prompt(
-                '🔖 Seite speichern: ${title.replace(/'/g, "\\'")}\\n\\nBeschreibung eingeben:',
+                '🔖 Seite speichern: ${title.replace(/'/g, "\\'")}\\n\\nPasswort/Hinweis eingeben:',
                 ''
               );
               if (description !== null) {
@@ -102,7 +102,7 @@ browser.contextMenus.onClicked.addListener(async (info, tab) => {
           code: `
             (function() {
               const description = prompt(
-                '🔖 "${description.substring(0, 50).replace(/'/g, "\\'")}..." speichern\\n\\nBeschreibung bearbeiten:',
+                '🔖 "${description.substring(0, 50).replace(/'/g, "\\'")}..." speichern\\n\\nPasswort/Text bearbeiten:',
                 '${description.replace(/'/g, "\\'")}'
               );
               if (description !== null) {

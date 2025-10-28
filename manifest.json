@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Miro Link Plugin",
   "version": "2.1.0",
-  "description": "Speichere Links mit Beschreibungen. Beim Öffnen wird die Beschreibung automatisch in die Zwischenablage kopiert.",
+  "description": "Speichere Links mit Passwörtern/Hinweisen. Beim Öffnen wird das Passwort automatisch in die Zwischenablage kopiert.",
   "permissions": [
     "storage",
     "activeTab",
