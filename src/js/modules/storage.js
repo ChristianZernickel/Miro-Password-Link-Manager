@@ -42,7 +42,8 @@ export async function loadTheme() {
     let theme = result.theme || 'light';
 
     if (!result.theme) {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      // Verwende globalThis statt window (moderne Best Practice)
+      const prefersDark = globalThis.matchMedia('(prefers-color-scheme: dark)').matches;
       theme = prefersDark ? 'dark' : 'light';
     }
 

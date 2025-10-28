@@ -331,6 +331,13 @@ header h1 {
   margin-top: 2px;
   cursor: pointer;
   user-select: none;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.bookmark-expand-indicator:hover {
+  color: var(--accent-primary);
+  background: var(--accent-light);
 }
 
 .bookmark-item:hover .bookmark-expand-indicator {
@@ -971,7 +978,6 @@ form {
   flex-direction: column;
   gap: 12px;
 }
-
 
 .url-with-favicon input {
   flex: 1;

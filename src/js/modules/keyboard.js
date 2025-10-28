@@ -4,6 +4,18 @@ export class KeyboardManager {
   constructor(callbacks) {
     this.callbacks = callbacks;
     this.selectedBookmarkIndex = -1;
+    this.isMac = this.detectMac();
+  }
+
+  // Moderne Mac-Detection (navigator.platform ist deprecated)
+  detectMac() {
+    // Moderne Methode mit userAgentData (wenn verfügbar)
+    if (navigator.userAgentData) {
+      return navigator.userAgentData.platform === 'macOS';
+    }
+
+    // Fallback: userAgent statt deprecated platform
+    return /Mac|iPhone|iPad|iPod/.test(navigator.userAgent);
   }
 
   // Event Handler initialisieren
@@ -19,8 +31,7 @@ export class KeyboardManager {
       activeElement.tagName === 'TEXTAREA'
     );
 
-    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-    const ctrlOrCmd = isMac ? e.metaKey : e.ctrlKey;
+    const ctrlOrCmd = this.isMac ? e.metaKey : e.ctrlKey;
 
     // Escape - Schließt Modals, löscht Suche
     if (e.key === 'Escape') {
@@ -135,8 +146,7 @@ export class KeyboardManager {
 
   // Hilfe anzeigen
   showHelp() {
-    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-    const ctrlKey = isMac ? '⌘' : 'Ctrl';
+    const ctrlKey = this.isMac ? '⌘' : 'Ctrl';
 
     const helpText = `🎹 KEYBOARD SHORTCUTS
 

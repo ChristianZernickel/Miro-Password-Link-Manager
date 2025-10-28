@@ -3,6 +3,7 @@
 export class ThemeManager {
   constructor() {
     this.currentTheme = 'light';
+    this.mediaQuery = null;
   }
 
   // Theme laden und anwenden
@@ -12,16 +13,35 @@ export class ThemeManager {
       this.currentTheme = result.theme || 'light';
 
       if (!result.theme) {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        // Verwende globalThis statt window (moderne Best Practice)
+        const prefersDark = globalThis.matchMedia('(prefers-color-scheme: dark)').matches;
         this.currentTheme = prefersDark ? 'dark' : 'light';
       }
 
       this.apply();
+      this.setupSystemThemeListener();
       return this.currentTheme;
     } catch (error) {
       console.error('Fehler beim Laden des Themes:', error);
       return 'light';
     }
+  }
+
+  // System Theme Änderungen beobachten (moderne Methode)
+  setupSystemThemeListener() {
+    // Verwende addEventListener statt deprecated addListener
+    this.mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)');
+
+    // Moderne addEventListener API (nicht deprecated)
+    this.mediaQuery.addEventListener('change', (e) => {
+      // Nur reagieren, wenn kein manuelles Theme gesetzt wurde
+      chrome.storage.local.get(['theme'], (result) => {
+        if (!result.theme) {
+          this.currentTheme = e.matches ? 'dark' : 'light';
+          this.apply();
+        }
+      });
+    });
   }
 
   // Theme anwenden

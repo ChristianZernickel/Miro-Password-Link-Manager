@@ -209,15 +209,19 @@ function renderBookmarks() {
 
   // Attach event listeners
   document.querySelectorAll('.bookmark-item').forEach(item => {
-    item.querySelector('.bookmark-header')?.addEventListener('click', (e) => {
-      if (!e.target.closest('.icon-btn')) {
-        item.classList.toggle('collapsed');
-        item.classList.toggle('expanded');
-      }
+    // Click auf Expand-Indicator -> Aufklappen
+    item.querySelector('.bookmark-expand-indicator')?.addEventListener('click', (e) => {
+      e.stopPropagation(); // Verhindert Bubble zum bookmark-item
+      item.classList.toggle('collapsed');
+      item.classList.toggle('expanded');
     });
 
-    item.querySelector('.bookmark-description')?.addEventListener('click', () => {
-      handleOpenBookmark(item.dataset.id);
+    // Click auf Bookmark (außer Buttons) -> Link öffnen
+    item.addEventListener('click', (e) => {
+      // Ignoriere Clicks auf Buttons und Expand-Indicator
+      if (!e.target.closest('.icon-btn') && !e.target.closest('.bookmark-expand-indicator')) {
+        handleOpenBookmark(item.dataset.id);
+      }
     });
   });
 

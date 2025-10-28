@@ -46,57 +46,73 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       case 'save-link':
         url = info.linkUrl;
         title = info.linkUrl.split('/').pop() || 'Link';
-        description = `Link via Rechtsklick gespeichert von ${tab.title}`;
-        break;
+        // Öffne Popup mit Script für Beschreibungs-Eingabe
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: (linkUrl, linkTitle) => {
+            const description = prompt(
+              `🔖 Link speichern: ${linkTitle}\n\nBeschreibung eingeben:`,
+              ''
+            );
+            if (description !== null) {
+              chrome.runtime.sendMessage({
+                action: 'saveFromContextMenu',
+                data: { url: linkUrl, title: linkTitle, description }
+              });
+            }
+          },
+          args: [url, title]
+        });
+        return; // Früher Return, da async über Message
 
       case 'save-page':
         url = tab.url;
         title = tab.title;
-        description = 'Via Rechtsklick gespeichert';
-        break;
+        // Öffne Popup für Beschreibungs-Eingabe
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: (pageUrl, pageTitle) => {
+            const description = prompt(
+              `🔖 Seite speichern: ${pageTitle}\n\nBeschreibung eingeben:`,
+              ''
+            );
+            if (description !== null) {
+              chrome.runtime.sendMessage({
+                action: 'saveFromContextMenu',
+                data: { url: pageUrl, title: pageTitle, description }
+              });
+            }
+          },
+          args: [url, title]
+        });
+        return;
 
       case 'save-selection':
         url = tab.url;
         title = tab.title;
         description = info.selectionText || '';
-        break;
+        // Bei Selection Text als Default-Beschreibung verwenden
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: (pageUrl, pageTitle, defaultDesc) => {
+            const description = prompt(
+              `🔖 "${defaultDesc.substring(0, 50)}..." speichern\n\nBeschreibung bearbeiten:`,
+              defaultDesc
+            );
+            if (description !== null) {
+              chrome.runtime.sendMessage({
+                action: 'saveFromContextMenu',
+                data: { url: pageUrl, title: pageTitle, description }
+              });
+            }
+          },
+          args: [url, title, description]
+        });
+        return;
 
       default:
         return;
     }
-
-    // Generiere ID
-    const bookmarkId = Date.now().toString(36) + Math.random().toString(36).substring(2);
-
-    // Favicon abrufen
-    const favicon = tab.favIconUrl || getFallbackFavicon(url);
-
-    // Erstelle neues Bookmark
-    const newBookmark = {
-      id: bookmarkId,
-      url,
-      title,
-      description,
-      tags: [],
-      favicon,
-      createdAt: Date.now(),
-      updatedAt: Date.now()
-    };
-
-    // Speichern
-    const result = await chrome.storage.sync.get(['bookmarks']);
-    const bookmarks = result.bookmarks || [];
-    bookmarks.push(newBookmark);
-    await chrome.storage.sync.set({ bookmarks });
-
-    // Notification anzeigen
-    chrome.notifications.create({
-      type: 'basic',
-      iconUrl: 'assets/icons/icon48.png',
-      title: 'Miro Links',
-      message: `✓ "${title}" gespeichert`,
-      priority: 1
-    });
 
   } catch (error) {
     console.error('Fehler beim Speichern via Context Menu:', error);
@@ -126,7 +142,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.storage.sync.get(['bookmarks'], (result) => {
       sendResponse({ bookmarks: result.bookmarks || [] });
     });
-    return true; // Für asynchrone Antwort
+    return true;
   }
 
   if (request.action === 'saveBookmark') {
@@ -134,6 +150,47 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       const bookmarks = result.bookmarks || [];
       bookmarks.push(request.bookmark);
       chrome.storage.sync.set({ bookmarks }, () => {
+        sendResponse({ success: true });
+      });
+    });
+    return true;
+  }
+
+  // Neuer Handler für Context Menu Speichern mit Beschreibung
+  if (request.action === 'saveFromContextMenu') {
+    const { url, title, description } = request.data;
+
+    // Generiere ID
+    const bookmarkId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+
+    // Favicon abrufen (vom Tab, falls verfügbar)
+    const favicon = sender.tab?.favIconUrl || getFallbackFavicon(url);
+
+    // Erstelle neues Bookmark
+    const newBookmark = {
+      id: bookmarkId,
+      url,
+      title,
+      description,
+      tags: [],
+      favicon,
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+
+    // Speichern
+    chrome.storage.sync.get(['bookmarks'], (result) => {
+      const bookmarks = result.bookmarks || [];
+      bookmarks.push(newBookmark);
+      chrome.storage.sync.set({ bookmarks }, () => {
+        // Notification anzeigen
+        chrome.notifications.create({
+          type: 'basic',
+          iconUrl: 'assets/icons/icon48.png',
+          title: 'Miro Links',
+          message: `✓ "${title}" gespeichert`,
+          priority: 1
+        });
         sendResponse({ success: true });
       });
     });

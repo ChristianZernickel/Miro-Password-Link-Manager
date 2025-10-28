@@ -224,9 +224,9 @@ Das Plugin bietet:
 
 **Status:** ✅ ABGESCHLOSSEN & PRODUKTIONSBEREIT
 
-**Version:** 2.0.0
+**Version:** 2.1.0
 
-**Datum:** $(date +%Y-%m-%d)
+**Datum:** 2024-10-28
 
 ---
 
