@@ -24,6 +24,7 @@ Speichere Links mit Passwörtern/Hinweisen, organisiere sie mit Tags, durchsuche
 - 🦊 [Firefox Version](firefox-version/README.md) - Firefox-spezifische Anleitung
 - 📝 [CHANGELOG](CHANGELOG.md) - Alle Versionen und Änderungen
 - 🏗️ [Projekt-Struktur](docs/PROJECT_STRUCTURE.md) - Architektur-Details
+- 🔒 [Privacy Policy / Datenschutzerklärung](PRIVACY_POLICY.md) - Datenschutz
 
 ---
 

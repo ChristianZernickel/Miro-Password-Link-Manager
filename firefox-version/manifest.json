@@ -4,7 +4,7 @@
   "version": "2.2.0",
   "description": "Speichere Links mit Passwörtern/Hinweisen. Beim Öffnen wird das Passwort automatisch in die Zwischenablage kopiert.",
 
-  "applications": {
+  "browser_specific_settings": {
     "gecko": {
       "id": "miro-links@christianzernickel.de",
       "strict_min_version": "109.0"

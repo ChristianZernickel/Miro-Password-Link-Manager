@@ -201,10 +201,13 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 // Keyboard Shortcut Handler
+// Note: In Firefox öffnen Shortcuts das Popup automatisch via manifest.json
+// browser.browserAction.openPopup() ist nicht implementiert
 if (browser.commands) {
   browser.commands.onCommand.addListener((command) => {
     if (command === 'save-current-page') {
-      browser.browserAction.openPopup();
+      // In Firefox nicht benötigt - Command öffnet Popup automatisch
+      console.log('Shortcut ausgeführt:', command);
     }
   });
 }

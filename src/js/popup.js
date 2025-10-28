@@ -198,6 +198,85 @@ function setupEventListeners() {
 
 // Render Functions
 
+// Sichere Funktion zum Erstellen eines Bookmark-Elements (vermeidet innerHTML)
+function createBookmarkElement(bookmark) {
+  const item = document.createElement('div');
+  item.className = 'bookmark-item collapsed';
+  item.dataset.id = bookmark.id;
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'bookmark-header';
+
+  const expandIndicator = document.createElement('span');
+  expandIndicator.className = 'bookmark-expand-indicator';
+  expandIndicator.textContent = '▶';
+
+  // Favicon (innerHTML ist OK hier, da renderFavicon bereits escaped)
+  const faviconContainer = document.createElement('div');
+  faviconContainer.innerHTML = renderFavicon(bookmark);
+
+  const info = document.createElement('div');
+  info.className = 'bookmark-info';
+
+  const title = document.createElement('div');
+  title.className = 'bookmark-title';
+  title.textContent = bookmark.title; // Sicher mit textContent
+
+  const url = document.createElement('div');
+  url.className = 'bookmark-url';
+  url.textContent = bookmark.url; // Sicher mit textContent
+
+  info.appendChild(title);
+  info.appendChild(url);
+
+  const actions = document.createElement('div');
+  actions.className = 'bookmark-actions';
+
+  const editBtn = document.createElement('button');
+  editBtn.className = 'icon-btn edit-btn';
+  editBtn.dataset.id = bookmark.id;
+  editBtn.textContent = '✏️';
+
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'icon-btn delete-btn';
+  deleteBtn.dataset.id = bookmark.id;
+  deleteBtn.textContent = '🗑️';
+
+  actions.appendChild(editBtn);
+  actions.appendChild(deleteBtn);
+
+  header.appendChild(expandIndicator);
+  header.appendChild(faviconContainer.firstChild);
+  header.appendChild(info);
+  header.appendChild(actions);
+
+  // Tags (innerHTML ist OK hier, da renderTags bereits escaped)
+  const tagsContainer = document.createElement('div');
+  tagsContainer.innerHTML = renderTags(bookmark.tags);
+
+  // Description (obfuscated)
+  const description = document.createElement('div');
+  description.className = 'bookmark-description obfuscated';
+  description.dataset.password = bookmark.description; // Escaped durch data-Attribut
+  description.textContent = '••••••••••••'; // Sicher mit textContent
+
+  // Date
+  const date = document.createElement('div');
+  date.className = 'bookmark-date';
+  date.textContent = formatDate(bookmark.createdAt); // Sicher mit textContent
+
+  // Zusammenbauen
+  item.appendChild(header);
+  if (tagsContainer.firstChild) {
+    item.appendChild(tagsContainer.firstChild);
+  }
+  item.appendChild(description);
+  item.appendChild(date);
+
+  return item;
+}
+
 function renderBookmarks() {
   if (currentBookmarks.length === 0) {
     elements.bookmarksList.innerHTML = '';
@@ -214,7 +293,13 @@ function renderBookmarks() {
     const msg = tagsManager.activeTags.size > 0 || searchManager.searchQuery
       ? '🔍 Keine Bookmarks gefunden.'
       : '📭 Noch keine Links gespeichert.';
-    elements.bookmarksList.innerHTML = `<div class="no-results">${msg}</div>`;
+
+    // Sichere DOM-Erstellung statt innerHTML
+    const noResultsDiv = document.createElement('div');
+    noResultsDiv.className = 'no-results';
+    noResultsDiv.textContent = msg;
+    elements.bookmarksList.innerHTML = '';
+    elements.bookmarksList.appendChild(noResultsDiv);
     return;
   }
 
@@ -222,25 +307,12 @@ function renderBookmarks() {
 
   const sorted = searchManager.sortBookmarks(filtered);
 
-  elements.bookmarksList.innerHTML = sorted.map(bookmark => `
-    <div class="bookmark-item collapsed" data-id="${bookmark.id}">
-      <div class="bookmark-header">
-        <span class="bookmark-expand-indicator">▶</span>
-        ${renderFavicon(bookmark)}
-        <div class="bookmark-info">
-          <div class="bookmark-title">${escapeHtml(bookmark.title)}</div>
-          <div class="bookmark-url">${escapeHtml(bookmark.url)}</div>
-        </div>
-        <div class="bookmark-actions">
-          <button class="icon-btn edit-btn" data-id="${bookmark.id}">✏️</button>
-          <button class="icon-btn delete-btn" data-id="${bookmark.id}">🗑️</button>
-        </div>
-      </div>
-      ${renderTags(bookmark.tags)}
-      <div class="bookmark-description obfuscated" data-password="${escapeHtml(bookmark.description)}">••••••••••••</div>
-      <div class="bookmark-date">${formatDate(bookmark.createdAt)}</div>
-    </div>
-  `).join('');
+  // Sichere DOM-Erstellung statt innerHTML
+  elements.bookmarksList.innerHTML = '';
+  sorted.forEach(bookmark => {
+    const bookmarkElement = createBookmarkElement(bookmark);
+    elements.bookmarksList.appendChild(bookmarkElement);
+  });
 
   // Attach event listeners
   document.querySelectorAll('.bookmark-item').forEach(item => {
@@ -322,21 +394,46 @@ function renderTagFilters() {
     html += '<button class="tag-filter-chip clear-filter" id="clearTagFilter">✕ Alle anzeigen</button>';
   }
 
-  html += sortedTags.map(tag => {
+  // Sichere DOM-Erstellung für Tag-Filter
+  elements.tagFilterContainer.innerHTML = '';
+
+  // Label erstellen
+  if (sortedTags.length > 0) {
+    const label = document.createElement('span');
+    label.className = 'tag-filters-label';
+    label.textContent = 'Filter:';
+    elements.tagFilterContainer.appendChild(label);
+  }
+
+  // Tag-Buttons erstellen
+  sortedTags.forEach(tag => {
     const isActive = tagsManager.activeTags.has(tag);
-    return `<button class="tag-filter-chip ${isActive ? 'active' : ''}" data-tag="${escapeHtml(tag)}">${escapeHtml(tag)}</button>`;
-  }).join('');
+    const btn = document.createElement('button');
+    btn.className = `tag-filter-chip ${isActive ? 'active' : ''}`;
+    btn.dataset.tag = tag;
+    btn.textContent = tag; // Sicher mit textContent
 
-  elements.tagFilterContainer.innerHTML = html;
-
-  // Event listeners
-  elements.tagFilterContainer.querySelectorAll('.tag-filter-chip[data-tag]').forEach(btn => {
     btn.addEventListener('click', () => {
-      tagsManager.toggleTagFilter(btn.dataset.tag);
+      tagsManager.toggleTagFilter(tag);
       renderBookmarks();
       renderTagFilters();
     });
+
+    elements.tagFilterContainer.appendChild(btn);
   });
+
+  // Clear button wenn Filter aktiv
+  if (tagsManager.activeTags.size > 0) {
+    const clearBtn = document.createElement('button');
+    clearBtn.className = 'tag-filter-chip clear-filter';
+    clearBtn.textContent = '✕ Filter zurücksetzen';
+    clearBtn.addEventListener('click', () => {
+      tagsManager.clearAllFilters();
+      renderBookmarks();
+      renderTagFilters();
+    });
+    elements.tagFilterContainer.appendChild(clearBtn);
+  }
 
   document.getElementById('clearTagFilter')?.addEventListener('click', () => {
     tagsManager.clearFilters();
@@ -349,22 +446,40 @@ function renderTempTags() {
   if (!elements.tagsContainer) return;
 
   if (tagsManager.tempTags.length === 0) {
-    elements.tagsContainer.innerHTML = '<div class="tags-empty">Noch keine Tags hinzugefügt</div>';
+    // Sichere DOM-Erstellung statt innerHTML
+    const emptyDiv = document.createElement('div');
+    emptyDiv.className = 'tags-empty';
+    emptyDiv.textContent = 'Noch keine Tags hinzugefügt';
+    elements.tagsContainer.innerHTML = '';
+    elements.tagsContainer.appendChild(emptyDiv);
     return;
   }
 
-  elements.tagsContainer.innerHTML = tagsManager.tempTags.map(tag => `
-    <span class="tag-chip">
-      <span class="tag-text">${escapeHtml(tag)}</span>
-      <button type="button" class="tag-remove" data-tag="${escapeHtml(tag)}">&times;</button>
-    </span>
-  `).join('');
+  // Sichere DOM-Erstellung für Tag-Chips
+  elements.tagsContainer.innerHTML = '';
 
-  elements.tagsContainer.querySelectorAll('.tag-remove').forEach(btn => {
-    btn.addEventListener('click', () => {
-      tagsManager.removeTag(btn.dataset.tag);
+  tagsManager.tempTags.forEach(tag => {
+    const chip = document.createElement('span');
+    chip.className = 'tag-chip';
+
+    const text = document.createElement('span');
+    text.className = 'tag-text';
+    text.textContent = tag; // Sicher mit textContent
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'tag-remove';
+    removeBtn.dataset.tag = tag;
+    removeBtn.innerHTML = '&times;'; // HTML-Entity ist sicher
+
+    removeBtn.addEventListener('click', () => {
+      tagsManager.removeTag(tag);
       renderTempTags();
     });
+
+    chip.appendChild(text);
+    chip.appendChild(removeBtn);
+    elements.tagsContainer.appendChild(chip);
   });
 }
 
