@@ -6,6 +6,50 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [2.2.0] - 2024-10-28 - "Password Security Edition"
+
+### 🔒 Sicherheitsverbesserungen
+
+#### Passwort-Terminologie & Obfuskation
+- **"Beschreibung" → "Passwort"** in allen UI-Elementen
+- Formulare verwenden jetzt "Passwort/Hinweis" statt "Beschreibung"
+- Context Menu Prompts fragen nach "Passwort/Hinweis"
+- Suche durchsucht "Passwort" statt "Beschreibung"
+
+#### Passwort-Obfuskation im Formular
+- **Toggle-Button (👁️/🙈)** zum Ein-/Ausblenden des Passworts
+- Passwort standardmäßig obfuskiert (blur + `-webkit-text-security: disc`)
+- Auto-Show bei Focus ins Eingabefeld
+- Visueller Button rechts oben im Textarea
+
+#### Passwort-Obfuskation in Bookmark-Liste
+- **Keine Klartext-Passwörter im HTML-DOM** mehr
+- Passwörter werden als `••••••••••••` gerendert (Platzhalter)
+- Echtes Passwort nur im `data-password` Attribut gespeichert
+- **Click-to-Reveal:** Passwort wird erst beim Click aus Attribut geladen
+- **Auto-Hide:** Passwort verschwindet automatisch nach 3 Sekunden
+- **Hover-Overlay:** "👁️ Klicken zum Anzeigen" erscheint beim Hover
+- Monospace-Font mit Letter-Spacing für bessere Lesbarkeit
+- Hellblauer Hintergrund beim Anzeigen
+
+### 🎨 UI-Verbesserungen
+- Größere, deutlichere Sternchen (20px, Letter-Spacing: 3px)
+- Visueller Hintergrund für Passwort-Bereich
+- Smooth Transitions zwischen obfuskiert/revealed
+- Cursor-Änderungen (pointer → text)
+
+### 🔧 Technische Details
+- CSS-Klassen: `.obfuscated` und `.revealed`
+- JavaScript Event-Handler für Click-to-Reveal
+- `textContent` wird dynamisch geändert (nicht im HTML vorgerendert)
+- `e.stopPropagation()` verhindert Link-Öffnen beim Passwort-Click
+
+### 📱 Beide Versionen
+- Chrome-Version vollständig aktualisiert
+- Firefox-Version parallel aktualisiert (browser.* API)
+
+---
+
 ## [2.1.0] - 2024-10-28 - "Usability & Modernization Update"
 
 ### ✨ Neue Features
@@ -157,6 +201,9 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 | v1.0.0 | 6 | ~500 | 5 | ✅ Basis |
 | v2.0.0 | 13 | ~1.200 | 10 | ✅ Feature-Complete |
 | v2.1.0 | 15 | ~1.500 | 20+ | ✅ Modern & Optimiert |
+| v2.2.0 | 15 | ~1.600 | 20+ | ✅ Passwort-Sicherheit |
+| v2.0.0 | 13 | ~1.200 | 10 | ✅ Feature-Complete |
+| v2.1.0 | 15 | ~1.500 | 20+ | ✅ Modern & Optimiert |
 
 ---
 
@@ -167,6 +214,7 @@ Entwickelt für persönlichen Gebrauch und kontinuierliche Verbesserung.
 ---
 
 **[Unreleased]:** https://github.com/ChristianZernickel/Miro-Password-Link-Manager
+**[2.2.0]:** https://github.com/ChristianZernickel/Miro-Password-Link-Manager/releases/tag/v2.2.0
 **[2.1.0]:** https://github.com/ChristianZernickel/Miro-Password-Link-Manager/releases/tag/v2.1.0
 **[2.0.0]:** https://github.com/ChristianZernickel/Miro-Password-Link-Manager/releases/tag/v2.0.0
 **[1.0.0]:** https://github.com/ChristianZernickel/Miro-Password-Link-Manager/releases/tag/v1.0.0

@@ -1,6 +1,6 @@
 # 🔖 Miro Link Plugin
 
-> **Version 2.1.0 - Restructured Edition** 🎉
+> **Version 2.2.0 - Password Security Edition** 🔒
 
 Chrome Extension zum Speichern von Links mit Beschreibungen, Tags, Suche, Dark Mode und mehr!
 
@@ -83,7 +83,7 @@ MIT License
 
 ---
 
-**Status:** ✅ Produktionsbereit | **Version:** 2.1.0 | **Features:** 7/8 (87.5%)
+**Status:** ✅ Produktionsbereit | **Version:** 2.2.0 | **Features:** 7/8 (87.5%)
 
 Siehe [docs/README.md](docs/README.md) für vollständige Dokumentation! 📚
 
