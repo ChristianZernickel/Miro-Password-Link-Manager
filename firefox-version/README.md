@@ -1,21 +1,16 @@
-# 🔖 Miro Link Plugin - Firefox Version
+# 🔖 Miro Link Plugin - Firefox Version 🦊
 
-> **Version 2.1.0 - Firefox Edition** 🦊
+> **Version 2.2.0 - Password Security Edition** 🔒
 
-Chrome Extension portiert für Firefox! Speichere Links mit Beschreibungen, die beim Öffnen automatisch in die Zwischenablage kopiert werden.
+Firefox Extension zum Speichern von Links mit Passwörtern/Hinweisen. Vollständig funktionsgleich mit der Chrome-Version!
 
 ---
 
-## 🦊 Firefox-spezifische Anpassungen
+## 📚 Dokumentation
 
-Diese Version wurde speziell für Firefox angepasst:
-
-### Technische Unterschiede zu Chrome-Version:
-
-1. **Manifest V2 statt V3**
-   - Firefox unterstützt noch kein Manifest V3 vollständig
-   - Verwendet `browser.*` API statt `chrome.*`
-
+**Firefox-spezifisch:**
+- 📖 Diese Datei - Firefox-Übersicht
+- 🔧 [FIREFOX_GUIDE.md](FIREFOX_GUIDE.md) - Detaillierte Installations- & Test-Anleitung
 2. **Background Scripts**
    - Klassisches Background Script statt Service Worker
    - `background-firefox.js` statt `background.js`
@@ -34,38 +29,112 @@ Diese Version wurde speziell für Firefox angepasst:
 
 ---
 
-## 🚀 Installation (Entwickler-Modus)
+---
 
-### 1. Firefox öffnen
-```
+## 🚀 Installation
+
+### Option 1: Temporäres Add-on (Schnell testen)
+
+```bash
+# 1. Firefox öffnen
 about:debugging#/runtime/this-firefox
+
+# 2. "Temporäres Add-on laden" klicken
+
+# 3. Diese Datei auswählen:
+firefox-version/manifest.json
+
+# Fertig! Icon sollte in Toolbar erscheinen
 ```
 
-### 2. "Temporäres Add-on laden"
-- Klicke auf "Temporäres Add-on laden..."
-- Navigiere zum `firefox-version` Ordner
-- Wähle die `manifest.json` Datei
-
-### 3. Plugin verwenden
-- Das Plugin-Icon erscheint in der Toolbar
-- Shortcut: `Ctrl+Shift+L` (Windows/Linux) / `Cmd+Shift+L` (Mac)
+**Nachteil:** Add-on wird beim Firefox-Neustart entfernt
 
 ---
 
-## ✨ Features (identisch mit Chrome-Version)
+### Option 2: web-ext (Empfohlen für Entwicklung)
 
-- 🔗 Links mit Beschreibungen speichern
+```bash
+# 1. web-ext installieren
+npm install -g web-ext
+
+# 2. In diesen Ordner wechseln
+cd firefox-version
+
+# 3. Firefox mit Extension starten
+web-ext run
+
+# 4. Validierung (optional)
+web-ext lint
+
+# 5. Build erstellen (optional)
+web-ext build
+```
+
+**Vorteile:** Auto-Reload, separate Firefox-Instanz, Validierung eingebaut
+
+---
+
+### Option 3: Signiertes Add-on (Permanente Installation)
+
+Für permanente Installation muss das Add-on signiert werden:
+
+**A. Via Mozilla Add-ons (AMO):**
+1. Account erstellen: https://addons.mozilla.org/developers/
+2. ZIP erstellen (siehe unten)
+3. "Submit a New Add-on" hochladen
+4. Review abwarten (1-3 Tage)
+## 🔧 Technische Details (Firefox)
+```
+### Manifest V2
+```json
+{
+  "manifest_version": 2,
+  "applications": {
+    "gecko": {
+      "id": "miro-links@christianzernickel.de",
+      "strict_min_version": "109.0"
+    }
+  }
+}
+```
+cd firefox-version
+### API-Unterschiede
+  CHANGELOG.md README.md \
+| Chrome | Firefox | Hinweis |
+|--------|---------|---------|
+| `chrome.storage` | `browser.storage` | Promises! |
+| `chrome.tabs` | `browser.tabs` | Promises! |
+| `chrome.scripting` | `browser.tabs.executeScript` | Manifest V2 |
+| Service Worker | Background Script | `background.scripts` |
+
+### Anpassungen von Chrome
+1. **Alle APIs:** `chrome.*` → `browser.*`
+2. **Background:** `background-firefox.js` (klassisches Script)
+3. **executeScript:** `tabs.executeScript` statt `scripting.executeScript`
+4. **Permissions:** `<all_urls>` und `tabs` hinzugefügt
 - 📋 Automatisches Kopieren in Zwischenablage
 - 🏷️ Organisation mit Tags (bis zu 5 pro Bookmark)
-- 🔍 Echtzeit-Suche in Titel, URL, Beschreibung und Tags
-- 🌓 Dark Mode mit Auto-Detection
-- 💾 Export/Import (JSON mit 3 Modi)
-- ⌨️ Keyboard Shortcuts
-- 🖱️ Context Menu Integration
+- 🔍 Echtzeit-Suche in Titel, URL, Passwort und Tags
 - 🎨 Automatische Favicons
 - 📊 Sortierung nach Datum oder Titel
 
----
+### 🆕 Neu in v2.2.0: Passwort-Sicherheit 🔒
+
+- **Keine Klartext-Passwörter** im HTML-DOM
+- **Platzhalter:** `••••••••••••` statt echtem Passwort
+- **Toggle-Button (👁️/🙈)** im Formular
+- **Click-to-Reveal:** Passwort nur 3 Sekunden sichtbar
+- **Hover-Overlay:** "👁️ Klicken zum Anzeigen"
+- **Schutz:** Vor Shoulder Surfing und Screenshots
+
+### Weitere Features
+- 🌓 Dark Mode mit Auto-Detection
+- 💾 Export/Import (JSON mit 3 Modi)
+- ⌨️ Keyboard Shortcuts
+- 🖱️ Context Menu Integration (Rechtsklick)
+- 🔄 Firefox Sync
+
+**Status:** 7/8 Features (87.5%) - Identisch mit Chrome!
 
 ## 🆕 Version 2.1.0 Features
 
@@ -169,19 +238,36 @@ web-ext lint
 
 # Build erstellen
 web-ext build
-```
+## 📄 Lizenz
 
-### Manuelles Testing
+MIT License
 1. `about:debugging#/runtime/this-firefox`
 2. "Temporäres Add-on laden"
-3. Nach Änderungen: "Neu laden" klicken
+
+## 📞 Support & Links
+
+**Firefox-spezifisch:**
+- 🔧 [FIREFOX_GUIDE.md](FIREFOX_GUIDE.md) - Detaillierte Anleitung
+- 📝 [CHANGELOG.md](CHANGELOG.md) - Versions-Historie
+- 🐛 Bekannte Firefox-Probleme im Guide
+
+**Allgemeine Docs:**
+- 📖 [../docs/README.md](../docs/README.md) - Feature-Dokumentation
+- 🌐 [../README.md](../README.md) - Chrome-Version
+- 💬 [GitHub Issues](https://github.com/ChristianZernickel/Miro-Password-Link-Manager/issues)
+
+**Veröffentlichung:**
+- 🦊 Mozilla Add-ons: https://addons.mozilla.org/ (nach Review)
+- 🌐 Chrome Web Store: (Chrome-Version)
 
 ---
 
-## 🐛 Firefox-spezifische Bekannte Probleme
+**Status:** ✅ Produktionsbereit | **Version:** 2.2.0 | **Features:** 7/8 (87.5%)
+3. Nach Änderungen: "Neu laden" klicken
 
-### Clipboard API
-- Firefox erfordert HTTPS oder localhost für Clipboard-Zugriff
+**Basierend auf Chrome Version:** 2.2.0
+## 🐛 Firefox-spezifische Bekannte Probleme
+**Vollständig funktionsgleich mit Chrome-Version! 🦊✨**
 - Funktioniert in Extension-Kontext ohne Einschränkungen
 
 ### Storage Sync
