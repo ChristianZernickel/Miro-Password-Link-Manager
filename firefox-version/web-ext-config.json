@@ -1,0 +1,17 @@
+{
+  "ignoreFiles": [
+    "*.md",
+    "*.txt",
+    "web-ext-config.json",
+    ".DS_Store",
+    "*.log"
+  ],
+  "build": {
+    "overwriteDest": true
+  },
+  "run": {
+    "browserConsole": true,
+    "startUrl": ["about:debugging#/runtime/this-firefox"]
+  }
+}
+

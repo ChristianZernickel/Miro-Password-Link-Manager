@@ -1,0 +1,56 @@
+{
+  "manifest_version": 2,
+  "name": "Miro Link Plugin",
+  "version": "2.1.0",
+  "description": "Speichere Links mit Beschreibungen. Beim Öffnen wird die Beschreibung automatisch in die Zwischenablage kopiert.",
+
+  "applications": {
+    "gecko": {
+      "id": "miro-links@christianzernickel.de",
+      "strict_min_version": "109.0"
+    }
+  },
+
+  "permissions": [
+    "storage",
+    "activeTab",
+    "clipboardWrite",
+    "contextMenus",
+    "notifications",
+    "tabs",
+    "<all_urls>"
+  ],
+
+  "browser_action": {
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    },
+    "default_title": "Miro Links"
+  },
+
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+
+  "background": {
+    "scripts": ["src/js/background-firefox.js"]
+  },
+
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L"
+      },
+      "description": "Öffne Miro Links"
+    }
+  },
+
+  "content_security_policy": "script-src 'self'; object-src 'self'"
+}
+
