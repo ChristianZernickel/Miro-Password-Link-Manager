@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Miro Link Plugin</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --text-color: #333;
+            --bg-color: #f5f5f5;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .meta {
+            background-color: var(--bg-color);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        p, li {
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+
+        .success {
+            background-color: #d4edda;
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #28a745;
+            margin: 20px 0;
+        }
+
+        .language-toggle {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+
+        .language-toggle:hover {
+            background-color: #357abd;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        strong {
+            color: #222;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+            text-align: center;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 Privacy Policy</h1>
+        <div class="subtitle">Miro Link Plugin</div>
+
+        <div class="meta">
+            <strong>Last Updated:</strong> October 28, 2025<br>
+            <strong>Version:</strong> 2.2.0
+        </div>
+
+        <div class="success">
+            <strong>🛡️ Your Privacy is Protected:</strong><br>
+            This Extension stores all data locally on your device and does <strong>NOT collect, transmit, or share</strong> any personal information with external parties.
+        </div>
+
+        <div class="section">
+            <h3>1. Overview</h3>
+            <p>Miro Link Plugin ("the Extension") is a browser extension that helps users manage bookmarks with passwords and tags. This Privacy Policy explains how the Extension handles user data.</p>
+        </div>
+
+        <div class="section">
+            <h3>2. Data Collection</h3>
+            <div class="highlight">
+                <strong>The Extension does NOT collect, transmit, or share any personal data with external servers or third parties.</strong>
+            </div>
+            <p>All data is stored locally on your device using Chrome's built-in storage API (<code>chrome.storage.sync</code> and <code>chrome.storage.local</code>).</p>
+        </div>
+
+        <div class="section">
+            <h3>3. Data Stored Locally</h3>
+            <p>The Extension stores the following data <strong>locally on your device only</strong>:</p>
+            <ul>
+                <li><strong>Bookmarks:</strong> URLs, titles, passwords, notes, and tags that you manually save</li>
+                <li><strong>Settings:</strong> Theme preferences (light/dark mode), sort order, and display options</li>
+                <li><strong>Metadata:</strong> Creation and modification timestamps for your bookmarks</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>4. How Data is Used</h3>
+            <p>Your data is used exclusively for:</p>
+            <ul>
+                <li>Displaying your saved bookmarks in the Extension popup</li>
+                <li>Copying passwords to clipboard when you click "Open" on a bookmark</li>
+                <li>Organizing bookmarks with tags and search functionality</li>
+                <li>Syncing your bookmarks across devices logged into the same Chrome/browser account (via <code>chrome.storage.sync</code>)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>5. Chrome Storage Sync</h3>
+            <p>The Extension uses Chrome's storage synchronization feature (<code>chrome.storage.sync</code>) to sync your bookmarks across devices where you're logged into the same Chrome account. This synchronization is handled entirely by Google Chrome and follows Google's privacy policies.</p>
+            <div class="highlight">
+                <strong>Important:</strong> All sync data remains within Google's Chrome infrastructure. The Extension developer has no access to your synced data.
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>6. Clipboard Access</h3>
+            <p>When you click "Open" on a bookmark, the Extension copies the associated password to your clipboard using the <code>clipboardWrite</code> permission. This happens <strong>only when you explicitly click the button</strong> and the data remains local to your device.</p>
+        </div>
+
+        <div class="section">
+            <h3>7. Permissions Used</h3>
+            <p>The Extension requests the following permissions:</p>
+            <ul>
+                <li><strong>storage:</strong> Store bookmarks and settings locally</li>
+                <li><strong>activeTab:</strong> Read current page URL and title when adding bookmarks</li>
+                <li><strong>clipboardWrite:</strong> Copy passwords to clipboard</li>
+                <li><strong>contextMenus:</strong> Add right-click context menu option</li>
+                <li><strong>notifications:</strong> Display success/error messages</li>
+                <li><strong>scripting:</strong> Enable context menu input prompts</li>
+            </ul>
+            <div class="highlight">
+                <strong>None of these permissions are used to collect, transmit, or share your data externally.</strong>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>8. Third-Party Services</h3>
+            <p>The Extension does <strong>NOT</strong>:</p>
+            <ul>
+                <li>Connect to any external servers</li>
+                <li>Send data to analytics services</li>
+                <li>Use tracking cookies or beacons</li>
+                <li>Communicate with third-party APIs</li>
+                <li>Load remote code or scripts</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>9. Data Security</h3>
+            <ul>
+                <li>All passwords and bookmarks are stored using Chrome's secure storage API</li>
+                <li>No data is transmitted over the internet by the Extension</li>
+                <li>Data security depends on your Chrome account security and device security</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>10. Data Deletion</h3>
+            <p>You can delete your data at any time:</p>
+            <ul>
+                <li><strong>Individual bookmarks:</strong> Click the delete button on any bookmark</li>
+                <li><strong>All data:</strong> Uninstall the Extension, which removes all stored data</li>
+                <li><strong>Manual deletion:</strong> Use Chrome's "Clear browsing data" feature and select "Hosted app data"</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>11. Children's Privacy</h3>
+            <p>The Extension does not knowingly collect data from children under 13 years of age. The Extension is suitable for all ages as it does not collect any personal information.</p>
+        </div>
+
+        <div class="section">
+            <h3>12. Changes to Privacy Policy</h3>
+            <p>Any changes to this Privacy Policy will be reflected in the Extension's documentation and in the Chrome Web Store listing. Continued use of the Extension after changes constitutes acceptance of the updated policy.</p>
+        </div>
+
+        <div class="section">
+            <h3>13. Contact</h3>
+            <p>For privacy concerns or questions, please open an issue on GitHub or contact the developer.</p>
+        </div>
+
+        <div class="section">
+            <h3>14. Compliance</h3>
+            <p>This Extension complies with:</p>
+            <ul>
+                <li>Chrome Web Store Developer Program Policies</li>
+                <li>General Data Protection Regulation (GDPR)</li>
+                <li>California Consumer Privacy Act (CCPA)</li>
+            </ul>
+            <p><strong>Your Rights:</strong></p>
+            <ul>
+                <li><strong>Access your data:</strong> All data is accessible within the Extension</li>
+                <li><strong>Delete your data:</strong> Uninstall the Extension or delete individual bookmarks</li>
+                <li><strong>Data portability:</strong> Export your bookmarks as JSON using the built-in export feature</li>
+            </ul>
+        </div>
+
+        <hr style="margin: 40px 0;">
+
+        <h2>🇩🇪 Deutsche Version</h2>
+
+        <div class="section">
+            <h3>1. Überblick</h3>
+            <p>Miro Link Plugin ("die Erweiterung") ist eine Browser-Erweiterung, die Benutzern hilft, Lesezeichen mit Passwörtern und Tags zu verwalten. Diese Datenschutzerklärung erklärt, wie die Erweiterung mit Benutzerdaten umgeht.</p>
+        </div>
+
+        <div class="section">
+            <h3>2. Datenerfassung</h3>
+            <div class="highlight">
+                <strong>Die Erweiterung erfasst, überträgt oder teilt KEINE personenbezogenen Daten mit externen Servern oder Dritten.</strong>
+            </div>
+            <p>Alle Daten werden lokal auf Ihrem Gerät mit der integrierten Chrome-Speicher-API (<code>chrome.storage.sync</code> und <code>chrome.storage.local</code>) gespeichert.</p>
+        </div>
+
+        <div class="section">
+            <h3>3. Lokal gespeicherte Daten</h3>
+            <p>Die Erweiterung speichert folgende Daten <strong>ausschließlich lokal auf Ihrem Gerät</strong>:</p>
+            <ul>
+                <li><strong>Lesezeichen:</strong> URLs, Titel, Passwörter, Notizen und Tags, die Sie manuell speichern</li>
+                <li><strong>Einstellungen:</strong> Theme-Präferenzen (Hell-/Dunkelmodus), Sortierreihenfolge und Anzeigeoptionen</li>
+                <li><strong>Metadaten:</strong> Erstellungs- und Änderungszeitstempel Ihrer Lesezeichen</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>4. Datenverwendung</h3>
+            <p>Ihre Daten werden ausschließlich verwendet für:</p>
+            <ul>
+                <li>Anzeige Ihrer gespeicherten Lesezeichen im Erweiterungs-Popup</li>
+                <li>Kopieren von Passwörtern in die Zwischenablage, wenn Sie bei einem Lesezeichen auf "Öffnen" klicken</li>
+                <li>Organisation von Lesezeichen mit Tags und Suchfunktionalität</li>
+                <li>Synchronisation Ihrer Lesezeichen über Geräte hinweg, die mit demselben Chrome/Browser-Konto angemeldet sind (über <code>chrome.storage.sync</code>)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>5. Chrome Storage Sync</h3>
+            <p>Die Erweiterung verwendet die Speichersynchronisationsfunktion von Chrome (<code>chrome.storage.sync</code>), um Ihre Lesezeichen über Geräte zu synchronisieren, auf denen Sie mit demselben Chrome-Konto angemeldet sind. Diese Synchronisation wird vollständig von Google Chrome verwaltet und folgt den Datenschutzrichtlinien von Google.</p>
+            <div class="highlight">
+                <strong>Wichtig:</strong> Alle Sync-Daten verbleiben in Googles Chrome-Infrastruktur. Der Entwickler der Erweiterung hat keinen Zugriff auf Ihre synchronisierten Daten.
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>6. Zwischenablage-Zugriff</h3>
+            <p>Wenn Sie bei einem Lesezeichen auf "Öffnen" klicken, kopiert die Erweiterung das zugehörige Passwort mit der <code>clipboardWrite</code>-Berechtigung in Ihre Zwischenablage. Dies geschieht <strong>nur, wenn Sie explizit auf die Schaltfläche klicken</strong>, und die Daten bleiben lokal auf Ihrem Gerät.</p>
+        </div>
+
+        <div class="section">
+            <h3>7. Verwendete Berechtigungen</h3>
+            <p>Die Erweiterung fordert folgende Berechtigungen an:</p>
+            <ul>
+                <li><strong>storage:</strong> Lokale Speicherung von Lesezeichen und Einstellungen</li>
+                <li><strong>activeTab:</strong> Lesen der aktuellen Seiten-URL und des Titels beim Hinzufügen von Lesezeichen</li>
+                <li><strong>clipboardWrite:</strong> Kopieren von Passwörtern in die Zwischenablage</li>
+                <li><strong>contextMenus:</strong> Hinzufügen einer Rechtsklick-Kontextmenü-Option</li>
+                <li><strong>notifications:</strong> Anzeige von Erfolgs-/Fehlermeldungen</li>
+                <li><strong>scripting:</strong> Aktivierung von Kontextmenü-Eingabeaufforderungen</li>
+            </ul>
+            <div class="highlight">
+                <strong>Keine dieser Berechtigungen wird verwendet, um Ihre Daten extern zu erfassen, zu übertragen oder zu teilen.</strong>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>8. Drittanbieter-Dienste</h3>
+            <p>Die Erweiterung verwendet <strong>KEINE</strong>:</p>
+            <ul>
+                <li>Verbindungen zu externen Servern</li>
+                <li>Datenübertragung an Analyse-Dienste</li>
+                <li>Tracking-Cookies oder Beacons</li>
+                <li>Kommunikation mit Drittanbieter-APIs</li>
+                <li>Laden von Remote-Code oder -Skripten</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>9. Datensicherheit</h3>
+            <ul>
+                <li>Alle Passwörter und Lesezeichen werden mit Chromes sicherer Speicher-API gespeichert</li>
+                <li>Keine Daten werden von der Erweiterung über das Internet übertragen</li>
+                <li>Die Datensicherheit hängt von Ihrer Chrome-Konto-Sicherheit und Gerätesicherheit ab</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>10. Datenlöschung</h3>
+            <p>Sie können Ihre Daten jederzeit löschen:</p>
+            <ul>
+                <li><strong>Einzelne Lesezeichen:</strong> Klicken Sie auf die Löschen-Schaltfläche bei jedem Lesezeichen</li>
+                <li><strong>Alle Daten:</strong> Deinstallieren Sie die Erweiterung, wodurch alle gespeicherten Daten entfernt werden</li>
+                <li><strong>Manuelle Löschung:</strong> Verwenden Sie Chromes Funktion "Browserdaten löschen" und wählen Sie "Daten gehosteter Apps"</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>11. Datenschutz für Kinder</h3>
+            <p>Die Erweiterung erfasst wissentlich keine Daten von Kindern unter 13 Jahren. Die Erweiterung ist für alle Altersgruppen geeignet, da sie keine personenbezogenen Informationen erfasst.</p>
+        </div>
+
+        <div class="section">
+            <h3>12. Änderungen der Datenschutzerklärung</h3>
+            <p>Änderungen dieser Datenschutzerklärung werden in der Dokumentation der Erweiterung und im Chrome Web Store-Eintrag angezeigt. Die fortgesetzte Nutzung der Erweiterung nach Änderungen gilt als Zustimmung zur aktualisierten Richtlinie.</p>
+        </div>
+
+        <div class="section">
+            <h3>13. Kontakt</h3>
+            <p>Für Datenschutzanliegen oder Fragen öffnen Sie bitte ein Issue auf GitHub oder kontaktieren Sie den Entwickler.</p>
+        </div>
+
+        <div class="section">
+            <h3>14. Compliance</h3>
+            <p>Diese Erweiterung erfüllt:</p>
+            <ul>
+                <li>Chrome Web Store Entwickler-Programmrichtlinien</li>
+                <li>Datenschutz-Grundverordnung (DSGVO)</li>
+                <li>California Consumer Privacy Act (CCPA)</li>
+            </ul>
+            <p><strong>Ihre Rechte:</strong></p>
+            <ul>
+                <li><strong>Zugriff auf Ihre Daten:</strong> Alle Daten sind innerhalb der Erweiterung zugänglich</li>
+                <li><strong>Löschung Ihrer Daten:</strong> Deinstallieren Sie die Erweiterung oder löschen Sie einzelne Lesezeichen</li>
+                <li><strong>Datenübertragbarkeit:</strong> Exportieren Sie Ihre Lesezeichen als JSON mit der integrierten Exportfunktion</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p><strong>Miro Link Plugin v2.2.0</strong></p>
+            <p>Your privacy is fully protected. All data is stored locally on your device.</p>
+            <p>Ihre Privatsphäre ist vollständig geschützt. Alle Daten werden lokal auf Ihrem Gerät gespeichert.</p>
+        </div>
+    </div>
+</body>
+</html>
+
