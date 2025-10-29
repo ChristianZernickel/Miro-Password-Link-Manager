@@ -1,6 +1,6 @@
 # 🔖 Miro Link Plugin
 
-> **Version 2.2.0 - Password Security Edition** 🔒
+> **Version 2.3.0 - Firefox Sidebar Edition** 🚀
 
 Speichere Links mit Passwörtern/Hinweisen, organisiere sie mit Tags, durchsuche sie und öffne sie mit automatischem Passwort-Kopieren in die Zwischenablage.
 

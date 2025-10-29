@@ -1,6 +1,6 @@
-# 🔖 Miro Link Plugin - Firefox Version 🦊
+# 🔖 Miro Link Plugin - Firefox Edition
 
-> **Version 2.2.0 - Password Security Edition** 🔒
+> **Version 2.3.0 - Firefox Sidebar Edition** 🚀
 
 Firefox Extension zum Speichern von Links mit Passwörtern/Hinweisen. Vollständig funktionsgleich mit der Chrome-Version!
 

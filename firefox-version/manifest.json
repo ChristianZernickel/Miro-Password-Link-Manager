@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Miro Link Plugin",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Speichere Links mit Passwörtern/Hinweisen. Beim Öffnen wird das Passwort automatisch in die Zwischenablage kopiert.",
 
   "browser_specific_settings": {

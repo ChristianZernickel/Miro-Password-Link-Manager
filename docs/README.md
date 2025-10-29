@@ -1,6 +1,6 @@
 # 🔖 Miro Link Plugin
 
-> **Version 2.2.0 - Password Security Edition** 🔒
+> **Version 2.3.0 - Firefox Sidebar Edition** 🚀
 > 
 > Professionelle modulare Architektur mit ES6 Modules, 87.5% Feature-Completion!
 
