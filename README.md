@@ -95,8 +95,17 @@ miro-link-plugin/           # ← Chrome Extension (Dieser Ordner)
 │   │   ├── background.js  # Service Worker
 │   │   └── modules/       # 7 Module (storage, tags, search, etc.)
 │   └── css/
+│       ├── main.css       # Import-Datei
 │       └── complete.css   # Komplettes CSS (~1.100 Zeilen)
 ├── assets/icons/          # Extension Icons
+├── scripts/               # 🆕 Build & Release Skripte
+│   ├── release.sh        # Vollständiger Release-Prozess
+│   ├── prepare-release.sh # Release vorbereiten (ZIP, Tag)
+│   └── create-github-release.sh # GitHub Release erstellen
+├── test/                  # 🆕 Test-Suite
+│   ├── manual/           # Manuelle Test-Checklisten
+│   ├── fixtures/         # Test-Daten
+│   └── test-runner.html  # Automatisierte Browser-Tests
 ├── docs/                  # Dokumentation
 └── firefox-version/       # 🦊 Firefox Port (separater Ordner)
     ├── manifest.json      # Firefox Manifest V2
@@ -140,6 +149,44 @@ src/popup.html
 # Nach Änderungen:
 chrome://extensions/ → Reload Button bei "Miro Link Plugin"
 
+### 🚀 Release erstellen
+
+Verwende die neuen automatisierten Release-Skripte:
+
+```bash
+# Vollständiger Release (empfohlen)
+./scripts/release.sh
+
+# Oder Schritt-für-Schritt:
+./scripts/prepare-release.sh      # Erstellt ZIP-Dateien, Tag, etc.
+./scripts/create-github-release.sh # Uploaded zu GitHub
+
+# Dokumentation
+cat scripts/README.md
+```
+
+**Features:**
+- ✅ Version wird automatisch aus `manifest.json` gelesen
+- ✅ Erstellt ZIP-Dateien für Chrome + Firefox
+- ✅ Generiert Release Notes automatisch
+- ✅ Erstellt SHA256-Checksums
+- ✅ Erstellt Git-Tag
+- ✅ Uploaded zu GitHub (mit `gh` CLI)
+
+### 🧪 Tests ausführen
+
+```bash
+# Manuelle Tests
+cat test/manual/chrome-tests.md   # Chrome Checkliste
+cat test/manual/firefox-tests.md  # Firefox Checkliste
+
+# Automatisierte Browser-Tests
+open test/test-runner.html         # Im Browser öffnen (nach Installation)
+
+# Test-Dokumentation
+cat test/README.md
+```
+
 # DevTools öffnen (für Debugging):
 Rechtsklick auf Plugin-Icon → "Popup prüfen"
 ```
@@ -158,7 +205,7 @@ Rechtsklick auf Plugin-Icon → "Popup prüfen"
 - **Code-Zeilen:** ~1.600 (JS) + ~1.100 (CSS)
 - **Größte Datei:** 620 Zeilen (war 1.200+ vor Refactoring)
 - **Root-Dateien:** 3 (war 20+)
-- **Feature-Completion:** 87.5% (7/8)
+**Status:** ✅ Produktionsbereit | **Version:** 2.3.0 | **Features:** 7/8 (87.5%)
 - **Dokumentation:** 15+ Markdown-Dateien
 
 ---

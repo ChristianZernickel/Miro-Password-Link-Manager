@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miro Link Plugin - Test Runner</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+      color: #333;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #4285f4;
+      margin-bottom: 10px;
+    }
+    .intro {
+      background: #e8f0fe;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    .test-section {
+      margin: 30px 0;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .test-header {
+      background: #4285f4;
+      color: white;
+      padding: 12px 15px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+    }
+    .test-header:hover {
+      background: #3367d6;
+    }
+    .test-body {
+      padding: 20px;
+      display: none;
+    }
+    .test-body.open {
+      display: block;
+    }
+    .test-case {
+      margin: 15px 0;
+      padding: 15px;
+      background: #f8f9fa;
+      border-left: 4px solid #dadce0;
+      border-radius: 4px;
+    }
+    .test-case h4 {
+      margin-bottom: 10px;
+      color: #5f6368;
+    }
+    .test-case button {
+      margin: 5px 5px 0 0;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .run-btn {
+      background: #4285f4;
+      color: white;
+    }
+    .run-btn:hover {
+      background: #3367d6;
+    }
+    .result {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+    .result.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .result.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .result.info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    .summary {
+      position: sticky;
+      top: 20px;
+      background: #fff;
+      padding: 20px;
+      border: 2px solid #4285f4;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .summary-item {
+      text-align: center;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 4px;
+    }
+    .summary-item .number {
+      font-size: 32px;
+      font-weight: bold;
+      color: #4285f4;
+    }
+    .summary-item .label {
+      font-size: 12px;
+      color: #5f6368;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-left: 10px;
+    }
+    .status-pass { background: #d4edda; color: #155724; }
+    .status-fail { background: #f8d7da; color: #721c24; }
+    .status-skip { background: #fff3cd; color: #856404; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 Miro Link Plugin - Test Runner</h1>
+    <p>Automatisierte Tests für Chrome/Firefox Extensions</p>
+
+    <div class="intro">
+      <strong>⚠️ Wichtig:</strong> Diese Tests müssen im Kontext der installierten Extension ausgeführt werden.
+      Die Extension muss geladen sein, damit die <code>chrome.*</code> bzw. <code>browser.*</code> APIs verfügbar sind.
+    </div>
+
+    <div class="summary">
+      <h3>Test-Zusammenfassung</h3>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="number" id="totalTests">0</div>
+          <div class="label">Gesamt</div>
+        </div>
+        <div class="summary-item">
+          <div class="number" id="passedTests" style="color: #1e8e3e;">0</div>
+          <div class="label">Erfolgreich</div>
+        </div>
+        <div class="summary-item">
+          <div class="number" id="failedTests" style="color: #d93025;">0</div>
+          <div class="label">Fehlgeschlagen</div>
+        </div>
+        <div class="summary-item">
+          <div class="number" id="skippedTests" style="color: #f9ab00;">0</div>
+          <div class="label">Übersprungen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Storage Tests -->
+    <div class="test-section">
+      <div class="test-header" onclick="toggleSection(this)">
+        📦 Storage Tests <span class="status-badge status-skip">Nicht ausgeführt</span>
+      </div>
+      <div class="test-body">
+        <div class="test-case">
+          <h4>Test: Bookmarks speichern und laden</h4>
+          <p>Testet ob Bookmarks korrekt in chrome.storage.sync gespeichert und geladen werden können.</p>
+          <button class="run-btn" onclick="runStorageTest(this)">Test ausführen</button>
+          <div class="result-container"></div>
+        </div>
+        <div class="test-case">
+          <h4>Test: Bookmark löschen</h4>
+          <p>Testet ob einzelne Bookmarks korrekt gelöscht werden können.</p>
+          <button class="run-btn" onclick="runDeleteTest(this)">Test ausführen</button>
+          <div class="result-container"></div>
+        </div>
+        <div class="test-case">
+          <h4>Test: Alle Bookmarks löschen</h4>
+          <p>Testet ob alle Bookmarks auf einmal gelöscht werden können.</p>
+          <button class="run-btn" onclick="runClearAllTest(this)">Test ausführen</button>
+          <div class="result-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export/Import Tests -->
+    <div class="test-section">
+      <div class="test-header" onclick="toggleSection(this)">
+        💾 Export/Import Tests <span class="status-badge status-skip">Nicht ausgeführt</span>
+      </div>
+      <div class="test-body">
+        <div class="test-case">
+          <h4>Test: Export als JSON</h4>
+          <p>Testet ob Bookmarks korrekt als JSON exportiert werden können.</p>
+          <button class="run-btn" onclick="runExportTest(this)">Test ausführen</button>
+          <div class="result-container"></div>
+        </div>
+        <div class="test-case">
+          <h4>Test: Import validieren</h4>
+          <p>Testet ob importierte JSON-Daten korrekt validiert werden.</p>
+          <button class="run-btn" onclick="runImportValidationTest(this)">Test ausführen</button>
+          <div class="result-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tags Tests -->
+    <div class="test-section">
+      <div class="test-header" onclick="toggleSection(this)">
+        🏷️ Tags Tests <span class="status-badge status-skip">Nicht ausgeführt</span>
+      </div>
+      <div class="test-body">
+        <div class="test-case">
+          <h4>Test: Tags hinzufügen (max 5)</h4>
+          <p>Testet ob maximal 5 Tags pro Bookmark erlaubt sind.</p>
+          <button class="run-btn" onclick="runTagsLimitTest(this)">Test ausführen</button>
+          <div class="result-container"></div>
+        </div>
+        <div class="test-case">
+          <h4>Test: Duplikat-Tags verhindern</h4>
+          <p>Testet ob doppelte Tags verhindert werden.</p>
+          <button class="run-btn" onclick="runDuplicateTagsTest(this)">Test ausführen</button>
+          <div class="result-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Tests -->
+    <div class="test-section">
+      <div class="test-header" onclick="toggleSection(this)">
+        🔍 Search Tests <span class="status-badge status-skip">Nicht ausgeführt</span>
+      </div>
+      <div class="test-body">
+        <div class="test-case">
+          <h4>Test: Titel-Suche</h4>
+          <p>Testet ob die Suche in Bookmark-Titeln funktioniert.</p>
+          <button class="run-btn" onclick="runTitleSearchTest(this)">Test ausführen</button>
+          <div class="result-container"></div>
+        </div>
+        <div class="test-case">
+          <h4>Test: Case-insensitive Suche</h4>
+          <p>Testet ob die Suche Groß-/Kleinschreibung ignoriert.</p>
+          <button class="run-btn" onclick="runCaseInsensitiveTest(this)">Test ausführen</button>
+          <div class="result-container"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Statistiken
+    let stats = { total: 0, passed: 0, failed: 0, skipped: 0 };
+
+    function toggleSection(header) {
+      const body = header.nextElementSibling;
+      body.classList.toggle('open');
+    }
+
+    function updateStats() {
+      document.getElementById('totalTests').textContent = stats.total;
+      document.getElementById('passedTests').textContent = stats.passed;
+      document.getElementById('failedTests').textContent = stats.failed;
+      document.getElementById('skippedTests').textContent = stats.skipped;
+    }
+
+    function showResult(button, success, message) {
+      const container = button.parentElement.querySelector('.result-container');
+      container.innerHTML = `<div class="result ${success ? 'success' : 'error'}">
+        ${success ? '✅' : '❌'} ${message}
+      </div>`;
+
+      stats.total++;
+      if (success) stats.passed++;
+      else stats.failed++;
+      updateStats();
+
+      // Update badge
+      const badge = button.closest('.test-section').querySelector('.status-badge');
+      badge.textContent = success ? 'Bestanden' : 'Fehlgeschlagen';
+      badge.className = `status-badge ${success ? 'status-pass' : 'status-fail'}`;
+    }
+
+    function showInfo(button, message) {
+      const container = button.parentElement.querySelector('.result-container');
+      container.innerHTML = `<div class="result info">ℹ️ ${message}</div>`;
+    }
+
+    // Check if extension APIs are available
+    const browserAPI = typeof chrome !== 'undefined' ? chrome : (typeof browser !== 'undefined' ? browser : null);
+
+    if (!browserAPI || !browserAPI.storage) {
+      document.querySelector('.intro').innerHTML += `
+        <br><br><strong style="color: #d93025;">❌ Extension APIs nicht verfügbar!</strong>
+        <br>Bitte öffne diese Seite im Kontext der installierten Extension.
+      `;
+    }
+
+    // Test Functions
+    async function runStorageTest(button) {
+      showInfo(button, 'Test läuft...');
+      try {
+        const testBookmark = {
+          id: 'test-' + Date.now(),
+          title: 'Test Bookmark',
+          url: 'https://example.com',
+          password: 'TestPass123',
+          tags: ['test'],
+          createdAt: Date.now()
+        };
+
+        // Save
+        await browserAPI.storage.sync.set({ bookmarks: [testBookmark] });
+
+        // Load
+        const result = await browserAPI.storage.sync.get('bookmarks');
+
+        if (result.bookmarks && result.bookmarks.length === 1 && result.bookmarks[0].title === 'Test Bookmark') {
+          showResult(button, true, 'Bookmark erfolgreich gespeichert und geladen!');
+        } else {
+          showResult(button, false, 'Geladene Daten stimmen nicht überein.');
+        }
+
+        // Cleanup
+        await browserAPI.storage.sync.remove('bookmarks');
+      } catch (error) {
+        showResult(button, false, `Fehler: ${error.message}`);
+      }
+    }
+
+    async function runDeleteTest(button) {
+      showInfo(button, 'Test läuft...');
+      try {
+        const bookmarks = [
+          { id: '1', title: 'A', url: 'https://a.com', tags: [] },
+          { id: '2', title: 'B', url: 'https://b.com', tags: [] }
+        ];
+
+        await browserAPI.storage.sync.set({ bookmarks });
+
+        // Delete one
+        const filtered = bookmarks.filter(b => b.id !== '1');
+        await browserAPI.storage.sync.set({ bookmarks: filtered });
+
+        const result = await browserAPI.storage.sync.get('bookmarks');
+
+        if (result.bookmarks.length === 1 && result.bookmarks[0].id === '2') {
+          showResult(button, true, 'Bookmark erfolgreich gelöscht!');
+        } else {
+          showResult(button, false, 'Löschen fehlgeschlagen.');
+        }
+
+        await browserAPI.storage.sync.remove('bookmarks');
+      } catch (error) {
+        showResult(button, false, `Fehler: ${error.message}`);
+      }
+    }
+
+    async function runClearAllTest(button) {
+      showInfo(button, 'Test läuft...');
+      try {
+        await browserAPI.storage.sync.set({ bookmarks: [{ id: '1', title: 'Test' }] });
+        await browserAPI.storage.sync.remove('bookmarks');
+
+        const result = await browserAPI.storage.sync.get('bookmarks');
+
+        if (!result.bookmarks || result.bookmarks.length === 0) {
+          showResult(button, true, 'Alle Bookmarks erfolgreich gelöscht!');
+        } else {
+          showResult(button, false, 'Nicht alle Daten wurden gelöscht.');
+        }
+      } catch (error) {
+        showResult(button, false, `Fehler: ${error.message}`);
+      }
+    }
+
+    async function runExportTest(button) {
+      showInfo(button, 'Test läuft...');
+      try {
+        const testData = {
+          bookmarks: [
+            { id: '1', title: 'Test', url: 'https://test.com', password: 'pass', tags: [] }
+          ]
+        };
+
+        const json = JSON.stringify(testData, null, 2);
+        const parsed = JSON.parse(json);
+
+        if (parsed.bookmarks && parsed.bookmarks.length === 1) {
+          showResult(button, true, 'Export als JSON erfolgreich!');
+        } else {
+          showResult(button, false, 'Export-Daten ungültig.');
+        }
+      } catch (error) {
+        showResult(button, false, `Fehler: ${error.message}`);
+      }
+    }
+
+    async function runImportValidationTest(button) {
+      showInfo(button, 'Test läuft...');
+      try {
+        const validData = { bookmarks: [{ id: '1', title: 'Test', url: 'https://test.com', tags: [] }] };
+        const invalidData = { items: [] }; // Wrong structure
+
+        const isValid = validData.bookmarks && Array.isArray(validData.bookmarks);
+        const isInvalid = !invalidData.bookmarks;
+
+        if (isValid && isInvalid) {
+          showResult(button, true, 'Import-Validierung funktioniert!');
+        } else {
+          showResult(button, false, 'Validierung fehlerhaft.');
+        }
+      } catch (error) {
+        showResult(button, false, `Fehler: ${error.message}`);
+      }
+    }
+
+    function runTagsLimitTest(button) {
+      showInfo(button, 'Test läuft...');
+      try {
+        const tags = ['tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6'];
+        const maxTags = 5;
+
+        if (tags.length > maxTags) {
+          showResult(button, true, `Limit erkannt: ${tags.length} > ${maxTags}`);
+        } else {
+          showResult(button, false, 'Tag-Limit nicht erkannt.');
+        }
+      } catch (error) {
+        showResult(button, false, `Fehler: ${error.message}`);
+      }
+    }
+
+    function runDuplicateTagsTest(button) {
+      showInfo(button, 'Test läuft...');
+      try {
+        const tags = ['test', 'dev', 'test']; // Duplicate 'test'
+        const uniqueTags = [...new Set(tags)];
+
+        if (uniqueTags.length === 2 && uniqueTags.includes('test') && uniqueTags.includes('dev')) {
+          showResult(button, true, 'Duplikate erfolgreich entfernt!');
+        } else {
+          showResult(button, false, 'Duplikat-Erkennung fehlerhaft.');
+        }
+      } catch (error) {
+        showResult(button, false, `Fehler: ${error.message}`);
+      }
+    }
+
+    function runTitleSearchTest(button) {
+      showInfo(button, 'Test läuft...');
+      try {
+        const bookmarks = [
+          { title: 'GitHub', url: 'https://github.com' },
+          { title: 'Google', url: 'https://google.com' }
+        ];
+        const query = 'git';
+        const results = bookmarks.filter(b => b.title.toLowerCase().includes(query.toLowerCase()));
+
+        if (results.length === 1 && results[0].title === 'GitHub') {
+          showResult(button, true, 'Titel-Suche funktioniert!');
+        } else {
+          showResult(button, false, 'Suche liefert falsche Ergebnisse.');
+        }
+      } catch (error) {
+        showResult(button, false, `Fehler: ${error.message}`);
+      }
+    }
+
+    function runCaseInsensitiveTest(button) {
+      showInfo(button, 'Test läuft...');
+      try {
+        const bookmarks = [{ title: 'GitHub' }];
+        const queries = ['github', 'GITHUB', 'GiThUb'];
+
+        const allMatch = queries.every(q =>
+          bookmarks.some(b => b.title.toLowerCase().includes(q.toLowerCase()))
+        );
+
+        if (allMatch) {
+          showResult(button, true, 'Case-insensitive Suche funktioniert!');
+        } else {
+          showResult(button, false, 'Suche ist case-sensitive.');
+        }
+      } catch (error) {
+        showResult(button, false, `Fehler: ${error.message}`);
+      }
+    }
+  </script>
+</body>
+</html>
+

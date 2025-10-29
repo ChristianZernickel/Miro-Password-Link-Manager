@@ -1,0 +1,91 @@
+{
+  "description": "Diese Datei enthält verschiedene ungültige Datensätze zum Testen der Fehlerbehandlung",
+  "testCases": {
+    "missingBookmarksKey": {
+      "data": [
+        {"id": "1", "title": "Test", "url": "https://test.com"}
+      ]
+    },
+    "invalidStructure": {
+      "bookmarks": "not an array"
+    },
+    "missingRequiredFields": {
+      "bookmarks": [
+        {"id": "1", "title": "No URL"}
+      ]
+    },
+    "tooManyTags": {
+      "bookmarks": [
+        {
+          "id": "1",
+          "title": "Too Many Tags",
+          "url": "https://test.com",
+          "tags": ["tag1", "tag2", "tag3", "tag4", "tag5", "tag6"]
+        }
+      ]
+    },
+    "malformedUrl": {
+      "bookmarks": [
+        {
+          "id": "1",
+          "title": "Bad URL",
+          "url": "not-a-valid-url",
+          "tags": []
+        }
+      ]
+    },
+    "emptyBookmarks": {
+      "bookmarks": []
+    }
+  }
+}
+{
+  "bookmarks": [
+    {
+      "id": "test-1",
+      "title": "GitHub",
+      "url": "https://github.com",
+      "password": "MySecretPassword123",
+      "tags": ["development", "tools"],
+      "favicon": "https://github.com/favicon.ico",
+      "createdAt": 1698000000000
+    },
+    {
+      "id": "test-2",
+      "title": "Google Drive",
+      "url": "https://drive.google.com",
+      "password": "AnotherPassword456",
+      "tags": ["cloud", "storage"],
+      "favicon": "https://drive.google.com/favicon.ico",
+      "createdAt": 1698000001000
+    },
+    {
+      "id": "test-3",
+      "title": "Miro Workspace",
+      "url": "https://miro.com/app/board/abc123",
+      "password": "MiroPass789",
+      "tags": ["collaboration", "design", "work"],
+      "favicon": "https://miro.com/favicon.ico",
+      "createdAt": 1698000002000
+    },
+    {
+      "id": "test-4",
+      "title": "Notion",
+      "url": "https://notion.so",
+      "password": "",
+      "tags": ["notes", "productivity"],
+      "favicon": "https://notion.so/favicon.ico",
+      "createdAt": 1698000003000
+    },
+    {
+      "id": "test-5",
+      "title": "Test ohne Tags",
+      "url": "https://example.com",
+      "password": "NoTagsPassword",
+      "tags": [],
+      "favicon": "",
+      "createdAt": 1698000004000
+    }
+  ]
+}
+

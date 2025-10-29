@@ -686,7 +686,7 @@ function updateStatistics() {
 
 function handleExport() {
   try {
-    const result = exportImportManager.exportBookmarks(
+    exportImportManager.exportBookmarks(
       currentBookmarks,
       tagsManager.currentTags
     );

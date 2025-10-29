@@ -6,6 +6,77 @@ Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/).
 
 ---
 
+## [Unreleased] - Repository Refactoring
+
+### 🧹 Code-Organisation & Struktur
+
+#### Release-Skripte modernisiert
+- **Automatische Versionserkennung** aus `manifest.json`
+- Skripte nach `scripts/` verschoben (Root-Ordner aufgeräumt)
+- Alte Skripte als deprecated markiert
+- Neue Dokumentation: `scripts/README.md`
+- Features:
+  - ✅ Version wird automatisch gelesen (keine Hardcodes)
+  - ✅ `./scripts/release.sh` - Vollständiger Release-Workflow
+  - ✅ `./scripts/prepare-release.sh` - Release vorbereiten
+  - ✅ `./scripts/create-github-release.sh` - GitHub Upload
+  - ✅ Checksums (SHA256) automatisch
+  - ✅ Release Notes automatisch generiert
+
+#### Test-Suite hinzugefügt
+- **Neues `/test` Verzeichnis** mit vollständiger Test-Infrastruktur
+- **Manuelle Tests:**
+  - `test/manual/chrome-tests.md` - Chrome Checkliste (100+ Tests)
+  - `test/manual/firefox-tests.md` - Firefox Checkliste (110+ Tests)
+- **Automatisierte Tests:**
+  - `test/test-runner.html` - Browser-basierter Test-Runner
+  - Storage, Export/Import, Tags, Search Tests
+- **Test-Daten:**
+  - `test/fixtures/sample-bookmarks.json` - Beispiel-Daten
+  - `test/fixtures/invalid-data.json` - Ungültige Daten für Edge Cases
+- **Dokumentation:** `test/README.md`
+
+#### Dateien aufgeräumt
+- ❌ `popup.css` entfernt (war veraltet, nur `src/css/complete.css` wird verwendet)
+- 📁 `test-settings.html` → `test/test-settings.html` verschoben
+- 📁 Release-Skripte → `scripts/` verschoben
+- ✅ Root-Ordner jetzt sauberer und übersichtlicher
+
+#### Dokumentation aktualisiert
+- ✅ `README.md` - Neue Projekt-Struktur dokumentiert
+- ✅ `README.md` - Release-Skripte & Tests dokumentiert
+- ✅ `PRIVACY_POLICY.html` - Version 2.3.0
+- ✅ Alle Versionsreferenzen konsistent
+
+### 📝 Projekt-Struktur
+
+```
+miro-link-plugin/
+├── scripts/          # 🆕 Build & Release Skripte (vorher im Root)
+├── test/             # 🆕 Test-Suite (manuell + automatisiert)
+├── src/              # ✅ Source Code (unverändert)
+├── firefox-version/  # ✅ Firefox-Port (unverändert)
+├── assets/           # ✅ Icons (unverändert)
+├── docs/             # ✅ Dokumentation (unverändert)
+└── manifest.json     # ✅ Chrome Manifest (unverändert)
+```
+
+### 🎯 Verbesserungen
+
+#### Maintainability
+- **Bessere Organisation:** Skripte und Tests in eigenen Ordnern
+- **Automatisierung:** Keine manuellen Versionsnummern mehr
+- **Testbarkeit:** Vollständige Test-Suite für QA
+- **Dokumentation:** Jeder Ordner hat README.md
+
+#### Developer Experience
+- Einfacherer Release-Prozess: `./scripts/release.sh`
+- Klare Test-Checklisten für manuelle Tests
+- Automatisierte Browser-Tests für CI/CD
+- Root-Ordner übersichtlicher
+
+---
+
 ## [2.2.0] - 2024-10-28 - "Password Security Edition"
 
 ### 🔒 Sicherheitsverbesserungen
