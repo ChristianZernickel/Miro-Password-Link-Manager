@@ -31,6 +31,11 @@ Temporary Items
 *.crx
 *.pem
 
+# Release artifacts
+releases/
+*.zip
+*.pem
+
 # Backup files
 *.bak
 *~

@@ -1,0 +1,44 @@
+/* Sidebar-spezifische Anpassungen für Firefox */
+
+/* Sidebar hat mehr Platz als Popup */
+body {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100vh !important;
+  max-height: none !important;
+}
+
+.container {
+  min-height: 100vh;
+}
+
+/* Settings Panel passt besser in Sidebar */
+.settings-panel {
+  width: 100%;
+  right: -100%;
+}
+
+.settings-panel.show {
+  right: 0;
+}
+
+/* Bookmarks haben mehr Platz */
+.bookmark-item {
+  padding: 14px 16px;
+}
+
+/* Modal über gesamte Sidebar */
+.modal-content {
+  width: 90%;
+  max-width: none;
+}
+
+/* Bessere Nutzung des Platzes */
+.search-sort-container {
+  flex-wrap: nowrap;
+}
+
+.search-wrapper {
+  min-width: 200px;
+}
+

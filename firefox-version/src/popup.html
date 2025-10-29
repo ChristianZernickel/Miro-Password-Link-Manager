@@ -109,34 +109,6 @@
         <button id="modalClose" class="close-btn">&times;</button>
       </div>
       <form id="bookmarkForm">
-  <!-- Import-Optionen-Dialog -->
-  <div id="importModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>📤 Daten importieren</h2>
-        <button id="importModalClose" class="close-btn">&times;</button>
-      </div>
-      <div class="import-info">
-        <p><strong id="importCount">0</strong> Bookmarks gefunden</p>
-        <p class="hint">Wähle eine Import-Option:</p>
-      </div>
-      <div class="import-options">
-        <button id="importReplace" class="btn btn-danger btn-block">
-          🔄 Ersetzen (alle aktuellen Daten löschen)
-        </button>
-        <button id="importMerge" class="btn btn-primary btn-block">
-          ➕ Zusammenführen (Duplikate überspringen)
-        </button>
-        <button id="importUpdate" class="btn btn-secondary btn-block">
-          🔃 Zusammenführen (Duplikate aktualisieren)
-        </button>
-      </div>
-      <div class="form-actions">
-        <button id="importCancel" class="btn btn-secondary">Abbrechen</button>
-      </div>
-    </div>
-  </div>
-
         <div class="form-group">
           <label for="bookmarkUrl">URL:</label>
           <div class="url-with-favicon">
@@ -182,10 +154,64 @@
       <div class="modal-header">
         <h2>Löschen bestätigen</h2>
       </div>
-      <p>Möchtest du diesen Link wirklich löschen?</p>
+      <p style="padding: 20px;">Möchtest du diesen Link wirklich löschen?</p>
       <div class="form-actions">
         <button id="confirmCancel" class="btn btn-secondary">Abbrechen</button>
         <button id="confirmDelete" class="btn btn-danger">Löschen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import-Optionen-Dialog -->
+  <div id="importModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📤 Daten importieren</h2>
+        <button id="importModalClose" class="close-btn">&times;</button>
+      </div>
+      <div class="import-info">
+        <p><strong id="importCount">0</strong> Bookmarks gefunden</p>
+        <p class="hint">Wähle eine Import-Option:</p>
+      </div>
+      <div class="import-options">
+        <button id="importReplace" class="btn btn-danger btn-block">
+          🔄 Ersetzen (alle aktuellen Daten löschen)
+        </button>
+        <button id="importMerge" class="btn btn-primary btn-block">
+          ➕ Zusammenführen (Duplikate überspringen)
+        </button>
+        <button id="importUpdate" class="btn btn-secondary btn-block">
+          🔃 Zusammenführen (Duplikate aktualisieren)
+        </button>
+      </div>
+      <div class="form-actions">
+        <button id="importCancel" class="btn btn-secondary">Abbrechen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bestätigungs-Dialog für "Alle Daten löschen" -->
+  <div id="clearAllModal" class="modal">
+    <div class="modal-content modal-small">
+      <div class="modal-header">
+        <h2>⚠️ Alle Daten löschen</h2>
+      </div>
+      <div class="clear-all-content">
+        <p><strong>ACHTUNG:</strong> Alle Bookmarks werden unwiderruflich gelöscht!</p>
+        <p class="hint">💡 Tipp: Möchtest du vorher exportieren?</p>
+        <div class="form-actions" style="margin-top: 16px;">
+          <button id="clearAllExport" class="btn btn-secondary btn-block">
+            📥 Exportieren & Abbrechen
+          </button>
+        </div>
+        <p style="margin-top: 24px; text-align: center; font-size: 14px;">
+          Wirklich <strong>ALLE</strong> Daten löschen?<br>
+          <span style="color: var(--error);">Diese Aktion kann nicht rückgängig gemacht werden!</span>
+        </p>
+      </div>
+      <div class="form-actions">
+        <button id="clearAllCancel" class="btn btn-secondary">Abbrechen</button>
+        <button id="clearAllConfirm" class="btn btn-danger">Alles löschen</button>
       </div>
     </div>
   </div>

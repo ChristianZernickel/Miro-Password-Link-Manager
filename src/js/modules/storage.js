@@ -28,7 +28,13 @@ export async function loadBookmarks() {
 
 export async function saveBookmarks(bookmarks) {
   try {
+    console.log('Speichere Bookmarks:', bookmarks.length, 'Einträge');
     await chrome.storage.sync.set({ bookmarks });
+
+    // Verifiziere das Speichern durch erneutes Laden
+    const verification = await chrome.storage.sync.get(['bookmarks']);
+    console.log('Verifizierung - Gespeicherte Bookmarks:', verification.bookmarks?.length || 0);
+
     return true;
   } catch (error) {
     console.error('Fehler beim Speichern der Bookmarks:', error);

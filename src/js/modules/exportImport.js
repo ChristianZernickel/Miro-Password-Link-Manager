@@ -73,9 +73,14 @@ export class ExportImportManager {
       case 'replace':
         // Alle löschen und neu importieren
         newBookmarks = this.importData.map(b => ({
-          ...b,
-          tags: b.tags || [],
-          favicon: b.favicon || null
+          id: b.id || this.generateId(),
+          url: b.url,
+          title: b.title,
+          description: b.description || '',
+          tags: Array.isArray(b.tags) ? b.tags : [],
+          favicon: b.favicon || null,
+          createdAt: b.createdAt || Date.now(),
+          updatedAt: b.updatedAt || Date.now()
         }));
         break;
 
@@ -87,10 +92,14 @@ export class ExportImportManager {
         this.importData.forEach(bookmark => {
           if (!existingUrls.has(bookmark.url)) {
             newBookmarks.push({
-              ...bookmark,
               id: this.generateId(),
-              tags: bookmark.tags || [],
-              favicon: bookmark.favicon || null
+              url: bookmark.url,
+              title: bookmark.title,
+              description: bookmark.description || '',
+              tags: Array.isArray(bookmark.tags) ? bookmark.tags : [],
+              favicon: bookmark.favicon || null,
+              createdAt: bookmark.createdAt || Date.now(),
+              updatedAt: Date.now()
             });
           }
         });
@@ -105,17 +114,21 @@ export class ExportImportManager {
           if (existing) {
             Object.assign(existing, {
               title: bookmark.title,
-              description: bookmark.description,
-              tags: bookmark.tags || existing.tags || [],
+              description: bookmark.description || existing.description,
+              tags: Array.isArray(bookmark.tags) ? bookmark.tags : (existing.tags || []),
               favicon: bookmark.favicon || existing.favicon,
               updatedAt: Date.now()
             });
           } else {
             currentBookmarks.push({
-              ...bookmark,
               id: this.generateId(),
-              tags: bookmark.tags || [],
-              favicon: bookmark.favicon || null
+              url: bookmark.url,
+              title: bookmark.title,
+              description: bookmark.description || '',
+              tags: Array.isArray(bookmark.tags) ? bookmark.tags : [],
+              favicon: bookmark.favicon || null,
+              createdAt: bookmark.createdAt || Date.now(),
+              updatedAt: Date.now()
             });
           }
         });
@@ -126,7 +139,10 @@ export class ExportImportManager {
         throw new Error('Ungültiger Import-Modus');
     }
 
+    // Reset import data
     this.importData = null;
+
+    console.log(`Import erfolgreich: ${newBookmarks.length} Bookmarks`);
     return newBookmarks;
   }
 

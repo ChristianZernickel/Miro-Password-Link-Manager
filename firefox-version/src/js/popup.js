@@ -34,6 +34,7 @@ const elements = {
   modal: document.getElementById('modal'),
   confirmModal: document.getElementById('confirmModal'),
   importModal: document.getElementById('importModal'),
+  clearAllModal: document.getElementById('clearAllModal'),
   modalTitle: document.getElementById('modalTitle'),
   bookmarkForm: document.getElementById('bookmarkForm'),
   searchInput: document.getElementById('searchInput'),
@@ -135,6 +136,11 @@ function setupEventListeners() {
   document.getElementById('modalClose')?.addEventListener('click', () => closeModal());
   document.getElementById('cancelBtn')?.addEventListener('click', () => closeModal());
   document.getElementById('confirmCancel')?.addEventListener('click', () => closeConfirmModal());
+  // Clear All Modal
+  document.getElementById('clearAllCancel')?.addEventListener('click', () => closeClearAllModal());
+  document.getElementById('clearAllConfirm')?.addEventListener('click', handleConfirmClearAll);
+  document.getElementById('clearAllExport')?.addEventListener('click', handleExportBeforeClear);
+
 
   // Tags
   elements.addTagBtn?.addEventListener('click', handleAddTag);
@@ -189,6 +195,9 @@ function setupEventListeners() {
 
   // Modal Close on outside click
   elements.modal?.addEventListener('click', (e) => {
+  elements.clearAllModal?.addEventListener('click', (e) => {
+    if (e.target === elements.clearAllModal) closeClearAllModal();
+  });
     if (e.target === elements.modal) closeModal();
   });
   elements.confirmModal?.addEventListener('click', (e) => {
@@ -591,7 +600,7 @@ async function handleOpenBookmark(bookmarkId) {
 
   try {
     await navigator.clipboard.writeText(bookmark.description);
-    await browser.tabs.create({ url: bookmark.url });
+    await chrome.tabs.create({ url: bookmark.url });
     showMessage('✓ Link geöffnet & Passwort kopiert', 'success');
   } catch (error) {
     showMessage('Fehler beim Öffnen des Links', 'error');
@@ -705,51 +714,73 @@ async function handleImportFile(e) {
 
 async function handleImport(mode) {
   try {
-    currentBookmarks = exportImportManager.importBookmarks(currentBookmarks, mode);
-    await saveBookmarks(currentBookmarks);
+    // Importiere die Bookmarks mit dem gewählten Modus
+    const importedBookmarks = exportImportManager.importBookmarks(currentBookmarks, mode);
 
+    // Speichere die Bookmarks in Chrome Storage
+    await saveBookmarks(importedBookmarks);
+
+    // Lade die Bookmarks neu aus dem Storage (zur Verifizierung)
+    currentBookmarks = await loadBookmarks();
+
+    // Aktualisiere Tags und UI
     tagsManager.collectAllTags(currentBookmarks);
     renderBookmarks();
     renderTagFilters();
+    updateStatistics();
 
     const message = mode === 'replace'
-      ? '✓ Bookmarks importiert (ersetzt)'
-      : '✓ Import abgeschlossen';
+      ? `✓ ${currentBookmarks.length} Bookmarks importiert (ersetzt)`
+      : `✓ Import abgeschlossen - ${currentBookmarks.length} Bookmarks gesamt`;
 
     showMessage(message, 'success');
     closeImportModal();
     closeSettings();
   } catch (error) {
+    console.error('Import-Fehler:', error);
     showMessage(error.message || 'Fehler beim Import', 'error');
   }
 }
 
 async function handleClearAll() {
-  const confirmed = confirm(
-    '⚠️ ACHTUNG: Alle Bookmarks werden unwiderruflich gelöscht!\n\n' +
-    'Möchtest du vorher exportieren?'
-  );
+  // Öffne das Clear All Modal
+  elements.clearAllModal?.classList.add('show');
+}
 
-  if (!confirmed) return;
-
-  const reallyConfirmed = confirm(
-    'Wirklich ALLE Daten löschen?\n\n' +
-    'Diese Aktion kann nicht rückgängig gemacht werden!'
-  );
-
-  if (!reallyConfirmed) return;
-
+async function handleConfirmClearAll() {
   try {
+    // Lösche alle Bookmarks
     currentBookmarks = [];
     await saveBookmarks([]);
+
+    // Aktualisiere UI
     tagsManager.collectAllTags([]);
     renderBookmarks();
     renderTagFilters();
+
     showMessage('✓ Alle Daten gelöscht', 'success');
+    closeClearAllModal();
     closeSettings();
   } catch (error) {
-    showMessage('Fehler beim Löschen', 'error');
+    console.error('Fehler beim Löschen:', error);
+    showMessage('Fehler beim Löschen der Daten', 'error');
   }
+}
+
+function handleExportBeforeClear() {
+  // Exportiere erst die Daten
+  try {
+    exportImportManager.exportBookmarks(
+      currentBookmarks,
+      tagsManager.currentTags
+    );
+    showMessage('✓ Bookmarks exportiert', 'success');
+  } catch (error) {
+    showMessage('Fehler beim Export', 'error');
+  }
+
+  // Schließe das Modal ohne zu löschen
+  closeClearAllModal();
 }
 
 // Modal Controls
@@ -778,6 +809,10 @@ function closeImportModal() {
   exportImportManager.reset();
 }
 
+function closeClearAllModal() {
+  elements.clearAllModal?.classList.remove('show');
+}
+
 function handleEscapeKey() {
   if (elements.modal?.classList.contains('show')) {
     closeModal();
@@ -785,6 +820,8 @@ function handleEscapeKey() {
     closeImportModal();
   } else if (elements.confirmModal?.classList.contains('show')) {
     closeConfirmModal();
+  } else if (elements.clearAllModal?.classList.contains('show')) {
+    closeClearAllModal();
   } else if (elements.settingsPanel?.classList.contains('show')) {
     closeSettings();
   } else if (elements.searchInput?.value) {

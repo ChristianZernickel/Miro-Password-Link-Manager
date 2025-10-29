@@ -31,6 +31,17 @@
     "default_title": "Miro Links"
   },
 
+  "sidebar_action": {
+    "default_panel": "src/sidebar.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    },
+    "default_title": "Miro Links",
+    "open_at_install": false
+  },
+
   "icons": {
     "16": "assets/icons/icon16.png",
     "48": "assets/icons/icon48.png",
@@ -47,7 +58,14 @@
         "default": "Ctrl+Shift+L",
         "mac": "Command+Shift+L"
       },
-      "description": "Öffne Miro Links"
+      "description": "Öffne Miro Links Popup"
+    },
+    "_execute_sidebar_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+B",
+        "mac": "Command+Shift+B"
+      },
+      "description": "Öffne Miro Links Sidebar"
     }
   },
 
