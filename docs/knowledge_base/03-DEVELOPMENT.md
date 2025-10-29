@@ -176,17 +176,24 @@ vim CHANGELOG.md
 ./scripts/release.sh
 
 # Was passiert:
-# 1. Version aus manifest.json lesen
+# 1. Version aus manifest.json lesen (automatisch!)
 # 2. Git-Status prüfen (muss sauber sein)
 # 3. Release-Ordner erstellen: releases/v2.4.0/
-# 4. Chrome ZIP erstellen
-# 5. Firefox ZIP erstellen
+# 4. Chrome ZIP erstellen (mit manifest.json) ✅
+# 5. Firefox ZIP erstellen (mit manifest.json) ✅
 # 6. Source ZIP erstellen
 # 7. Release Notes generieren
 # 8. SHA256 Checksums erstellen
 # 9. Git-Tag erstellen: v2.4.0
 # 10. Frage: GitHub Release erstellen?
 ```
+
+**Wichtig:** Beide ZIPs enthalten jetzt die `manifest.json`:
+- Chrome: `/manifest.json` + `src/` + `assets/`
+- Firefox: `/manifest.json` + `src/` + `assets/`
+
+**Fix (29. Okt 2025):** Frühere Versionen packten nur `src/` ohne manifest.json.
+Dies wurde behoben - siehe `RELEASE_FIX.md` für Details.
 
 ### Manueller Release
 
