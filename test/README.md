@@ -32,15 +32,33 @@ test/
 
 ### Automatisierte Tests
 
-```bash
-# Im Browser-Kontext (für Extension APIs)
-# Öffne test-runner.html in deinem Browser nach Installation der Extension
-open test/test-runner.html
+**WICHTIG:** Die Tests müssen im Extension-Kontext ausgeführt werden!
 
-# Oder nutze Web-Ext für Firefox
-cd firefox-version
-web-ext run --start-url "about:debugging#/runtime/this-firefox"
-```
+⚠️ **Nach Änderungen an der manifest.json:** Extension auf `chrome://extensions/` neu laden!
+
+#### So öffnest du den Test-Runner:
+
+**Chrome/Edge:**
+1. Installiere die Extension (`chrome://extensions/` → "Entpackte Erweiterung laden")
+2. **Reload die Extension** (Reload-Button auf chrome://extensions/)
+3. Öffne die Extension (Icon klicken oder `Ctrl+Shift+L`)
+4. Öffne DevTools (Rechtsklick auf Popup → "Prüfen")
+5. In der Console eingeben und Enter drücken:
+   ```javascript
+   window.open(chrome.runtime.getURL('test/test-runner.html'))
+   ```
+
+**Firefox:**
+1. Installiere die Extension (`about:debugging` → "Temporäres Add-on laden")
+2. **Reload die Extension** (Reload-Button bei der Extension)
+3. Öffne die Extension (Icon klicken oder `Ctrl+Shift+L`)
+4. Öffne DevTools (Rechtsklick auf Popup → "Element untersuchen")
+5. In der Console eingeben und Enter drücken:
+   ```javascript
+   window.open(browser.runtime.getURL('test/test-runner.html'))
+   ```
+
+**✅ Alle Tests sind direkt sichtbar** - kein Aufklappen nötig!
 
 ## 📋 Test-Kategorien
 
